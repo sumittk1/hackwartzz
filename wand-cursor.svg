@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="glow" cx="24" cy="8" r="12" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff7c2" stop-opacity=".95"/>
+      <stop offset=".35" stop-color="#ffd15c" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#ffb52e" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="wood" x1="18" y1="54" x2="30" y2="15" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#382017"/>
+      <stop offset=".25" stop-color="#795033"/>
+      <stop offset=".48" stop-color="#bd8950"/>
+      <stop offset=".72" stop-color="#77462b"/>
+      <stop offset="1" stop-color="#392018"/>
+    </linearGradient>
+  </defs>
+  <g transform="rotate(45 24 8)">
+    <circle cx="24" cy="8" r="12" fill="url(#glow)"/>
+    <path d="m24 1 1.1 4.4L29 7l-3.9 1.4L24 13l-1.2-4.6L19 7l3.8-1.6L24 1Z" fill="#fff3bb" stroke="#e9ad45" stroke-width=".7"/>
+    <path d="m14 9 2.7.7.7 2.8.8-2.8 2.8-.7-2.8-.8-.8-2.7-.7 2.7L14 9Zm17 4 2.3.6.7 2.4.6-2.4 2.4-.6-2.4-.7-.6-2.3-.7 2.3L31 13Z" fill="#ffd777"/>
+    <path d="M23.2 10.5c1.9 4 2.7 7.3 1 10.7-1.2 2.4-3.7 4.2-2.1 7.2 1.1 2.1 2.4 3.8 1.2 7.1-1.1 3.1-2.5 5.2-1.4 8.6 1 3.5.5 8.4.7 13.8.1 2.1 2.6 3.2 3.4 1.1 2-5.4 2.2-10.4 3.4-14.5 1.1-3.8-.7-6.1-.4-9.4.3-3.5 2.9-5.1 1.3-8.4-1.4-2.9-3.1-4.5-2-7.6 1.1-3.1.4-5.8-1.2-8.6l-2.1-3.7-1.8 3.7Z" fill="url(#wood)" stroke="#301a16" stroke-width="1.2" stroke-linejoin="round"/>
+    <path d="M24.1 14c1.3 3.6 1 5.5-.4 8.2-1.2 2.4-2.3 3.7-1.1 5.9m4.3-4c-1 2.5 1.9 4.3 1.1 6.6-.7 2-2 2.4-1.3 5.4m-4.4 3c1.5 2.6-.5 4.7.8 7.7m4.1.8c-1.5 2.9-.8 5.3-2.1 8.8" fill="none" stroke="#e0b276" stroke-opacity=".75" stroke-width=".9" stroke-linecap="round"/>
+    <path d="m20.8 29 2.3 1.5m5.5 8.4-2.1 1.5m-4.3 6.4 2.4 1.3m3.3-24.6-2.2 1.2" fill="none" stroke="#3b2017" stroke-width="1.3" stroke-linecap="round"/>
+    <path d="m22.4 35.1 3.6.8m-4.4 9.2 4.4.8m-4 9.1 4 .7" fill="none" stroke="#d2a05c" stroke-opacity=".9" stroke-width=".8"/>
+    <circle cx="24" cy="7" r="1.3" fill="#fff"/>
+  </g>
+</svg>
