@@ -11,7 +11,8 @@ Changes to the Hackwarts landing page, recorded from the project prompts.
 
 ### Typography and cursor
 
-- Applied Pirata One as the page-wide typeface.
+- Applied the provided Harry P font site-wide, with Pirata One retained as a fallback.
+- Increased navigation link and registration-button text sizes while keeping the mobile header within narrow screens.
 - Replaced the initial cursor with a custom wooden wand featuring carved details, a diagonal tilt, and a magical glow.
 - Tilted the wand cursor to 45 degrees and added two revolving, glowing magical points for fine-pointer devices; touch and reduced-motion users retain a static cursor.
 
