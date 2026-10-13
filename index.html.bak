@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080b10">
+  <meta name="description" content="Hackwarts — a little magic is about to begin.">
+  <title>Hackwarts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: "Harry P";
+      src: url("HarryP-MVZ6w.ttf") format("truetype");
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    :root {
+      color-scheme: dark;
+      font-family: "Harry P", "Pirata One", Georgia, "Times New Roman", serif;
+      background: #080b10;
+      color: #f5f0df;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-width: 320px;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    html {
+      cursor: url("wand-cursor.svg") 24 8, auto;
+    }
+
+    .wand-cursor {
+      position: fixed;
+      z-index: 20;
+      top: 0;
+      left: 0;
+      width: 64px;
+      height: 64px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate3d(-100px, -100px, 0);
+      transition: opacity 100ms ease-out;
+    }
+
+    .wand-cursor.is-visible {
+      opacity: 1;
+    }
+
+    .wand-cursor-image {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 64px;
+      height: 64px;
+    }
+
+    .wand-orbit {
+      position: absolute;
+      top: 36px;
+      left: 27px;
+      width: 30px;
+      height: 24px;
+      animation: wand-orbit 2.4s linear infinite;
+    }
+
+    .wand-orbit--wide {
+      top: 38px;
+      left: 28px;
+      width: 34px;
+      height: 17px;
+      animation-duration: 3.2s;
+      animation-direction: reverse;
+    }
+
+    .wand-spark {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #fff1b4;
+      box-shadow: 0 0 5px 2px rgb(255 214 112 / 78%);
+      transform: translate(-50%, -50%);
+    }
+
+    .wand-orbit--wide .wand-spark {
+      width: 3px;
+      height: 3px;
+      background: #d8f4ff;
+      box-shadow: 0 0 5px 2px rgb(145 216 255 / 72%);
+    }
+
+    @keyframes wand-orbit {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      body.magic-cursor-enabled,
+      body.magic-cursor-enabled * {
+        cursor: none !important;
+      }
+    }
+
+    body {
+      min-height: 100svh;
+      overflow: hidden;
+    }
+
+    .loading-screen {
+      position: fixed;
+      z-index: 10;
+      overflow: hidden;
+      background: #05090f;
+      transform: translateY(0);
+      transition: transform 650ms cubic-bezier(0.23, 1, 0.32, 1);
+      will-change: transform;
+      inset: 0;
+    }
+
+    .loading-screen.is-hidden {
+      pointer-events: none;
+      transform: translateY(-100%);
+    }
+
+    .loading-video {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .scene {
+      position: relative;
+      display: grid;
+      min-height: 100svh;
+      place-items: center;
+      isolation: isolate;
+      overflow: hidden;
+      background: #080b10;
+    }
+
+    .scene::after {
+      position: absolute;
+      z-index: -1;
+      background:
+        radial-gradient(ellipse at center, rgb(4 7 12 / 3%) 12%, rgb(4 7 12 / 38%) 100%),
+        linear-gradient(180deg, rgb(4 7 12 / 20%), transparent 25%, transparent 72%, rgb(4 7 12 / 42%));
+      content: "";
+      inset: 0;
+    }
+
+    .backdrop {
+      position: absolute;
+      z-index: -2;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .topbar {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      right: 0;
+      left: 0;
+      display: flex;
+      min-height: 78px;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(18px, 3vw, 48px);
+      padding: 0 clamp(24px, 5vw, 76px);
+      border-top: 1px solid rgb(232 190 109 / 44%);
+      border-bottom: 1px solid rgb(229 203 143 / 22%);
+      background:
+        linear-gradient(90deg, rgb(5 12 21 / 82%), rgb(7 15 24 / 68%) 55%, rgb(5 12 21 / 84%));
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+    }
+
+    .brand {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .brand-logo {
+      display: block;
+      width: clamp(165px, 16vw, 220px);
+      height: auto;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 0 7px rgb(219 164 75 / 16%));
+    }
+
+    .nav-links {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(18px, 2.5vw, 40px);
+      margin: 0 auto;
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 10px 0;
+      color: #e5e1d9;
+      font-size: clamp(17px, 1.25vw, 20px);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 160ms ease;
+    }
+
+    .nav-link::after {
+      position: absolute;
+      right: 50%;
+      bottom: 1px;
+      left: 50%;
+      height: 1px;
+      background: #d9aa58;
+      content: "";
+      transition: right 160ms ease, left 160ms ease;
+    }
+
+    .nav-link:hover,
+    .nav-link[aria-current="page"] {
+      color: #e6bd70;
+    }
+
+    .nav-link:hover::after,
+    .nav-link[aria-current="page"]::after {
+      right: 0;
+      left: 0;
+    }
+
+    .register-link {
+      display: inline-flex;
+      min-height: 48px;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 24px;
+      border: 1px solid #bf9550;
+      border-radius: 5px;
+      background:
+        linear-gradient(135deg, rgb(219 170 83 / 11%), transparent 55%),
+        rgb(8 13 19 / 48%);
+      box-shadow: inset 0 0 0 1px rgb(238 200 124 / 13%), 0 0 18px rgb(196 145 61 / 9%);
+      color: #e8c27e;
+      font-size: 22px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .register-link:hover {
+      border-color: #f0cf8a;
+      background-color: rgb(183 133 57 / 16%);
+      box-shadow: inset 0 0 0 1px rgb(238 200 124 / 24%), 0 0 22px rgb(196 145 61 / 18%);
+    }
+
+    .register-link:focus-visible,
+    .brand:focus-visible,
+    .nav-link:focus-visible {
+      outline: 2px solid #f0cf8a;
+      outline-offset: 4px;
+    }
+
+    .register-arrow {
+      width: 17px;
+      height: 17px;
+      fill: currentColor;
+    }
+
+    .music-toggle {
+      position: absolute;
+      z-index: 2;
+      right: max(24px, env(safe-area-inset-right));
+      bottom: max(24px, env(safe-area-inset-bottom));
+      display: grid;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      place-items: center;
+      border: 1px solid rgb(229 203 143 / 38%);
+      border-radius: 50%;
+      background: rgb(5 12 21 / 72%);
+      color: #edb64e;
+      font-family: inherit;
+      cursor: pointer;
+      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
+      transition: border-color 160ms ease, background 160ms ease;
+    }
+
+    .music-toggle:hover {
+      border-color: #edb64e;
+      background: rgb(5 12 21 / 92%);
+    }
+
+    .music-toggle:focus-visible {
+      outline: 2px solid #f5f0df;
+      outline-offset: 4px;
+    }
+
+    .music-toggle svg {
+      width: 21px;
+      height: 21px;
+      fill: currentColor;
+    }
+
+    .music-toggle .icon-muted {
+      display: none;
+    }
+
+    .music-toggle[aria-pressed="false"] .icon-muted {
+      display: block;
+    }
+
+    .music-toggle[aria-pressed="false"] .icon-sound {
+      display: none;
+    }
+
+    .identity {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      display: grid;
+      width: min(68vw, 510px);
+      place-items: center;
+      transform: translate(-50%, -50%);
+      animation: arrive 900ms cubic-bezier(.2, .7, .2, 1) both;
+    }
+
+    .identity img {
+      display: block;
+      width: 150%;
+      height: auto;
+      filter: drop-shadow(0 12px 36px rgb(0 0 0 / 55%));
+    }
+
+    @keyframes arrive {
+      from {
+        opacity: 0;
+        transform: translate(-50%, calc(-50% + 8px)) scale(.98);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    @media (max-width: 1000px) {
+      .topbar {
+        gap: 20px;
+        padding-inline: 28px;
+      }
+
+      .nav-links {
+        gap: 18px;
+      }
+
+      .brand-logo {
+        width: clamp(160px, 19vw, 190px);
+      }
+
+      .register-link {
+        min-height: 44px;
+        gap: 8px;
+        padding-inline: 16px;
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar {
+        display: grid;
+        min-height: 108px;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-rows: 62px 42px;
+        gap: 0 16px;
+        padding: 0 18px 4px;
+      }
+
+      .nav-links {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-content: flex-start;
+        gap: 26px;
+        width: 100%;
+        margin: 0;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scrollbar-width: none;
+      }
+
+      .nav-links::-webkit-scrollbar {
+        display: none;
+      }
+
+      .nav-link {
+        padding: 9px 0;
+        font-size: 17px;
+      }
+
+      .brand {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .brand-logo {
+        width: clamp(138px, 39vw, 178px);
+      }
+
+      .register-link {
+        grid-column: 2;
+        grid-row: 1;
+        min-height: 40px;
+        gap: 4px;
+        padding-inline: 8px;
+        font-size: 17px;
+      }
+
+      .register-arrow {
+        width: 14px;
+        height: 14px;
+      }
+
+      .identity {
+        top: 46%;
+        width: min(82vw, 420px);
+      }
+
+      .music-toggle {
+        right: max(18px, env(safe-area-inset-right));
+        bottom: max(18px, env(safe-area-inset-bottom));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .loading-screen {
+        transition-duration: 0.01ms !important;
+      }
+
+      .wand-orbit {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading-screen" role="status" aria-live="polite" aria-label="Loading Hackwarts" hidden>
+    <video class="loading-video" muted playsinline preload="none" aria-hidden="true">
+      <source src="Video%20Project%208.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <main class="scene" aria-label="Hackwarts">
+    <video class="backdrop" autoplay muted loop playsinline aria-hidden="true">
+      <source src="main%20background%20video.mp4" type="video/mp4">
+    </video>
+    <audio class="background-music" loop preload="metadata">
+      <source src="back_song.mp4" type="audio/mp4">
+    </audio>
+
+    <nav class="topbar" aria-label="Main navigation">
+      <a class="brand" href="#home">
+        <img class="brand-logo" src="Golden%20Hackwarts%20Wizarding%20Emblem.png" alt="Hackwarts — The Wizarding Hackathon">
+      </a>
+
+      <div class="nav-links">
+        <a class="nav-link" href="#home" aria-current="page">Home</a>
+        <a class="nav-link" href="#about">About</a>
+        <a class="nav-link" href="#houses">Houses</a>
+        <a class="nav-link" href="#tracks">Tracks</a>
+        <a class="nav-link" href="#schedule">Schedule</a>
+        <a class="nav-link" href="#faqs">FAQs</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </div>
+
+      <a class="register-link" href="#register">
+        Register Now
+        <svg class="register-arrow" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13.2 5.2 20 12l-6.8 6.8-1.4-1.4 4.4-4.4H4v-2h12.2l-4.4-4.4z"/>
+        </svg>
+      </a>
+    </nav>
+
+    <div class="identity">
+      <img src="Golden%20Hackwarts%20Wizarding%20Emblem.png" alt="Hackwarts wizarding emblem">
+    </div>
+
+    <button class="music-toggle" type="button" aria-label="Play background music" aria-pressed="false" title="Play background music">
+      <svg class="icon-sound" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/>
+      </svg>
+      <svg class="icon-muted" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 9v6h4l5 4V5L7 9H3zm13.59 3 2.12 2.12-1.41 1.41L15.17 13.4l-2.12 2.13-1.42-1.42L13.76 12l-2.13-2.12 1.42-1.42 2.12 2.13 2.13-2.13 1.41 1.42L16.59 12z"/>
+      </svg>
+    </button>
+  </main>
+  <div class="wand-cursor" aria-hidden="true">
+    <img class="wand-cursor-image" src="wand-cursor.svg" alt="">
+    <span class="wand-orbit">
+      <span class="wand-spark"></span>
+    </span>
+    <span class="wand-orbit wand-orbit--wide">
+      <span class="wand-spark"></span>
+    </span>
+  </div>
+  <script>
+    const video = document.querySelector(".backdrop");
+    const loadingVideo = document.querySelector(".loading-video");
+    const music = document.querySelector(".background-music");
+    const musicToggle = document.querySelector(".music-toggle");
+    const loadingScreen = document.querySelector(".loading-screen");
+    const wandCursor = document.querySelector(".wand-cursor");
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const enableIntroVideo = false;
+    const loadingStart = 9;
+    const loadingEnd = 17;
+    let loadingFinished = false;
+    let loadingTimeout;
+
+    function finishLoadingScreen() {
+      if (loadingFinished) {
+        return;
+      }
+
+      loadingFinished = true;
+      window.clearTimeout(loadingTimeout);
+      loadingVideo.pause();
+      loadingScreen.classList.add("is-hidden");
+      loadingScreen.setAttribute("aria-hidden", "true");
+      loadingScreen.inert = true;
+    }
+
+    function startLoadingVideo() {
+      if (loadingFinished || loadingVideo.dataset.seekStarted) {
+        return;
+      }
+
+      if (!Number.isFinite(loadingVideo.duration) || loadingVideo.duration < loadingEnd) {
+        console.error("The loading video is shorter than the requested 00:09–00:17 segment.");
+        finishLoadingScreen();
+        return;
+      }
+
+      loadingVideo.dataset.seekStarted = "true";
+      loadingVideo.addEventListener("seeked", async () => {
+        if (loadingFinished) {
+          return;
+        }
+
+        try {
+          await loadingVideo.play();
+        } catch (error) {
+          if (error.name !== "AbortError") {
+            console.error("Could not play the loading video.", error);
+          }
+          finishLoadingScreen();
+        }
+      }, { once: true });
+      loadingVideo.currentTime = loadingStart;
+    }
+
+    if (finePointer.matches) {
+      document.body.classList.add("magic-cursor-enabled");
+
+      window.addEventListener("pointermove", (event) => {
+        if (event.pointerType !== "mouse" && event.pointerType !== "pen") {
+          return;
+        }
+
+        wandCursor.style.transform = `translate3d(${event.clientX - 24}px, ${event.clientY - 8}px, 0)`;
+        wandCursor.classList.add("is-visible");
+      }, { passive: true });
+
+      document.documentElement.addEventListener("pointerleave", () => {
+        wandCursor.classList.remove("is-visible");
+      });
+    }
+
+    function syncMusicToggle() {
+      const isPlaying = !music.paused;
+      const label = isPlaying ? "Pause background music" : "Play background music";
+      musicToggle.setAttribute("aria-pressed", String(isPlaying));
+      musicToggle.setAttribute("aria-label", label);
+      musicToggle.setAttribute("title", label);
+    }
+
+    async function startMusic() {
+      try {
+        await music.play();
+        syncMusicToggle();
+      } catch (error) {
+        if (error.name === "NotAllowedError" || error.name === "AbortError") {
+          syncMusicToggle();
+          return;
+        }
+
+        musicToggle.disabled = true;
+        musicToggle.setAttribute("aria-label", "Background music unavailable");
+        musicToggle.setAttribute("title", "Background music unavailable");
+        console.error("Could not play the background music.", error);
+      }
+    }
+
+    if (reducedMotion.matches) {
+      video.pause();
+    }
+
+    if (enableIntroVideo) {
+      loadingScreen.hidden = false;
+      loadingScreen.inert = false;
+      loadingScreen.removeAttribute("aria-hidden");
+      loadingVideo.preload = "auto";
+      loadingVideo.addEventListener("loadedmetadata", startLoadingVideo);
+      loadingVideo.addEventListener("timeupdate", () => {
+        if (loadingVideo.currentTime >= loadingEnd) {
+          finishLoadingScreen();
+        }
+      });
+      loadingVideo.addEventListener("ended", finishLoadingScreen);
+      loadingVideo.addEventListener("error", () => {
+        console.error("Could not load the loading video.");
+        finishLoadingScreen();
+      });
+      loadingTimeout = window.setTimeout(() => {
+        if (!loadingFinished) {
+          console.error("The loading video timed out before the intro completed.");
+          finishLoadingScreen();
+        }
+      }, 20000);
+      loadingVideo.load();
+    }
+
+    musicToggle.addEventListener("click", () => {
+      if (music.paused) {
+        startMusic();
+      } else {
+        music.pause();
+        syncMusicToggle();
+      }
+    });
+
+    music.addEventListener("play", syncMusicToggle);
+    music.addEventListener("pause", syncMusicToggle);
+    syncMusicToggle();
+  </script>
+</body>
+</html>

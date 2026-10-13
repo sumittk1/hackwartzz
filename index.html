@@ -4,15 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080b10">
-  <meta name="description" content="Hackwarts — a little magic is about to begin.">
-  <title>Hackwarts</title>
+  <meta name="description" content="Hackwarts — The Wizarding Hackathon by Black Rabbit. Where Code Becomes Magic. A 24-hour offline hackathon blending Harry Potter lore with modern innovation.">
+  <title>Hackwarts | The Wizarding Hackathon</title>
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pirata+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Cinzel+Decorative:wght@700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&family=Pirata+One&display=swap" rel="stylesheet">
+  
   <style>
     @font-face {
       font-family: "Harry P";
-      src: url("HarryP-MVZ6w.ttf") format("truetype");
+      src: local("Harry P"), local("HarryP"), url("HarryP-MVZ6w.ttf") format("truetype");
       font-style: normal;
       font-weight: 400;
       font-display: swap;
@@ -20,9 +23,30 @@
 
     :root {
       color-scheme: dark;
-      font-family: "Harry P", "Pirata One", Georgia, "Times New Roman", serif;
-      background: #080b10;
-      color: #f5f0df;
+      --font-harry: "Harry P", "Cinzel", Georgia, serif;
+      --font-display: "Cinzel", "Cinzel Decorative", Georgia, serif;
+      --font-heading: "Cinzel", Georgia, "Times New Roman", serif;
+      --font-body: "EB Garamond", Georgia, "Times New Roman", serif;
+      --font-ui: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      
+      --gold-100: #fff6db;
+      --gold-200: #f6e0a3;
+      --gold-300: #e8c27e;
+      --gold-400: #d4a754;
+      --gold-500: #b8862d;
+      
+      --bg-dark: #070a0f;
+      --bg-surface: rgba(10, 15, 24, 0.82);
+      --bg-card: rgba(8, 13, 20, 0.78);
+      
+      --border-gold: rgba(212, 175, 55, 0.38);
+      --border-gold-glow: rgba(240, 207, 138, 0.65);
+      
+      --text-main: #f5f0df;
+      --text-muted: #c8c0ae;
+      --text-dim: #9b9380;
+      
+      --glow-gold: 0 0 16px rgba(232, 194, 126, 0.35);
     }
 
     *,
@@ -31,21 +55,31 @@
       box-sizing: border-box;
     }
 
-    html,
-    body {
+    html {
       width: 100%;
       min-width: 320px;
-      min-height: 100%;
       margin: 0;
-    }
-
-    html {
+      scroll-behavior: smooth;
       cursor: url("wand-cursor.svg") 24 8, auto;
     }
 
+    body {
+      width: 100%;
+      min-height: 100vh;
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: 18px;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      overflow-y: auto;
+      line-height: 1.7;
+    }
+
+    /* Custom Wand Cursor */
     .wand-cursor {
       position: fixed;
-      z-index: 20;
+      z-index: 999;
       top: 0;
       left: 0;
       width: 64px;
@@ -118,14 +152,10 @@
       }
     }
 
-    body {
-      min-height: 100svh;
-      overflow: hidden;
-    }
-
+    /* Loading Screen */
     .loading-screen {
       position: fixed;
-      z-index: 10;
+      z-index: 1000;
       overflow: hidden;
       background: #05090f;
       transform: translateY(0);
@@ -149,6 +179,190 @@
       object-position: center;
     }
 
+    /* Fixed Topbar Navigation */
+    .topbar {
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      right: 0;
+      left: 0;
+      display: flex;
+      min-height: 78px;
+      align-items: center;
+      justify-content: space-between;
+      gap: clamp(16px, 2.5vw, 42px);
+      padding: 0 clamp(20px, 4vw, 68px);
+      border-top: 1px solid rgb(232 190 109 / 44%);
+      border-bottom: 1px solid rgb(229 203 143 / 22%);
+      background: linear-gradient(90deg, rgba(5, 11, 18, 0.94), rgba(7, 14, 22, 0.88) 50%, rgba(5, 11, 18, 0.94));
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .brand {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .brand-logo {
+      display: block;
+      width: clamp(150px, 15vw, 205px);
+      height: auto;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 0 8px rgb(219 164 75 / 22%));
+      transition: transform 0.2s ease;
+    }
+
+    .brand-logo:hover {
+      transform: scale(1.02);
+    }
+
+    .nav-links {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(14px, 2vw, 36px);
+      margin: 0 auto;
+      font-family: var(--font-heading);
+    }
+
+    .nav-link {
+      position: relative;
+      padding: 10px 0;
+      color: #e5e1d9;
+      font-size: clamp(14px, 1.05vw, 16px);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 180ms ease;
+    }
+
+    .nav-link::after {
+      position: absolute;
+      right: 50%;
+      bottom: 2px;
+      left: 50%;
+      height: 2px;
+      background: #e8c27e;
+      box-shadow: 0 0 6px rgba(232, 194, 126, 0.8);
+      content: "";
+      transition: right 180ms ease, left 180ms ease;
+    }
+
+    .nav-link:hover,
+    .nav-link[aria-current="page"] {
+      color: #f2cd82;
+      text-shadow: 0 0 10px rgba(242, 205, 130, 0.45);
+    }
+
+    .nav-link:hover::after,
+    .nav-link[aria-current="page"]::after {
+      right: 0;
+      left: 0;
+    }
+
+    .register-link {
+      display: inline-flex;
+      min-height: 44px;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 22px;
+      border: 1px solid #bf9550;
+      border-radius: 4px;
+      background:
+        linear-gradient(135deg, rgb(219 170 83 / 16%), transparent 60%),
+        rgb(8 13 19 / 65%);
+      box-shadow: inset 0 0 0 1px rgb(238 200 124 / 16%), 0 0 18px rgb(196 145 61 / 14%);
+      color: #ebd193;
+      font-family: var(--font-heading);
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 200ms ease;
+    }
+
+    .register-link:hover {
+      border-color: #f5dc9e;
+      background-color: rgb(183 133 57 / 24%);
+      box-shadow: inset 0 0 0 1px rgb(238 200 124 / 32%), 0 0 25px rgb(196 145 61 / 28%);
+      transform: translateY(-1px);
+      color: #fff2cc;
+    }
+
+    .register-arrow {
+      width: 17px;
+      height: 17px;
+      fill: currentColor;
+      transition: transform 0.2s ease;
+    }
+
+    .register-link:hover .register-arrow {
+      transform: translateX(3px);
+    }
+
+    /* Fixed Floating Audio Controller */
+    .music-toggle {
+      position: fixed;
+      z-index: 90;
+      right: max(24px, env(safe-area-inset-right));
+      bottom: max(24px, env(safe-area-inset-bottom));
+      display: grid;
+      width: 50px;
+      height: 50px;
+      padding: 0;
+      place-items: center;
+      border: 1px solid rgb(229 203 143 / 48%);
+      border-radius: 50%;
+      background: rgb(5 12 21 / 85%);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 14px rgba(229, 203, 143, 0.22);
+      color: #edb64e;
+      cursor: pointer;
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+    }
+
+    .music-toggle:hover {
+      border-color: #f6d17b;
+      background: rgb(8 16 28 / 95%);
+      transform: scale(1.08);
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.7), 0 0 20px rgba(246, 209, 123, 0.4);
+    }
+
+    .music-toggle svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    .music-toggle .icon-muted {
+      display: none;
+    }
+
+    .music-toggle[aria-pressed="false"] .icon-muted {
+      display: block;
+    }
+
+    .music-toggle[aria-pressed="false"] .icon-sound {
+      display: none;
+    }
+
+    /* ========================================================
+       HERO SCENE
+       ======================================================== */
     .scene {
       position: relative;
       display: grid;
@@ -176,173 +390,6 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
-    }
-
-    .topbar {
-      position: absolute;
-      z-index: 1;
-      top: 0;
-      right: 0;
-      left: 0;
-      display: flex;
-      min-height: 78px;
-      align-items: center;
-      justify-content: space-between;
-      gap: clamp(18px, 3vw, 48px);
-      padding: 0 clamp(24px, 5vw, 76px);
-      border-top: 1px solid rgb(232 190 109 / 44%);
-      border-bottom: 1px solid rgb(229 203 143 / 22%);
-      background:
-        linear-gradient(90deg, rgb(5 12 21 / 82%), rgb(7 15 24 / 68%) 55%, rgb(5 12 21 / 84%));
-      -webkit-backdrop-filter: blur(8px);
-      backdrop-filter: blur(8px);
-    }
-
-    .brand {
-      display: inline-flex;
-      flex: 0 0 auto;
-      align-items: center;
-      line-height: 1;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .brand-logo {
-      display: block;
-      width: clamp(165px, 16vw, 220px);
-      height: auto;
-      flex: 0 0 auto;
-      filter: drop-shadow(0 0 7px rgb(219 164 75 / 16%));
-    }
-
-    .nav-links {
-      display: flex;
-      min-width: 0;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(18px, 2.5vw, 40px);
-      margin: 0 auto;
-    }
-
-    .nav-link {
-      position: relative;
-      padding: 10px 0;
-      color: #e5e1d9;
-      font-size: clamp(17px, 1.25vw, 20px);
-      text-decoration: none;
-      white-space: nowrap;
-      transition: color 160ms ease;
-    }
-
-    .nav-link::after {
-      position: absolute;
-      right: 50%;
-      bottom: 1px;
-      left: 50%;
-      height: 1px;
-      background: #d9aa58;
-      content: "";
-      transition: right 160ms ease, left 160ms ease;
-    }
-
-    .nav-link:hover,
-    .nav-link[aria-current="page"] {
-      color: #e6bd70;
-    }
-
-    .nav-link:hover::after,
-    .nav-link[aria-current="page"]::after {
-      right: 0;
-      left: 0;
-    }
-
-    .register-link {
-      display: inline-flex;
-      min-height: 48px;
-      flex: 0 0 auto;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 0 24px;
-      border: 1px solid #bf9550;
-      border-radius: 5px;
-      background:
-        linear-gradient(135deg, rgb(219 170 83 / 11%), transparent 55%),
-        rgb(8 13 19 / 48%);
-      box-shadow: inset 0 0 0 1px rgb(238 200 124 / 13%), 0 0 18px rgb(196 145 61 / 9%);
-      color: #e8c27e;
-      font-size: 22px;
-      text-decoration: none;
-      white-space: nowrap;
-      transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
-    }
-
-    .register-link:hover {
-      border-color: #f0cf8a;
-      background-color: rgb(183 133 57 / 16%);
-      box-shadow: inset 0 0 0 1px rgb(238 200 124 / 24%), 0 0 22px rgb(196 145 61 / 18%);
-    }
-
-    .register-link:focus-visible,
-    .brand:focus-visible,
-    .nav-link:focus-visible {
-      outline: 2px solid #f0cf8a;
-      outline-offset: 4px;
-    }
-
-    .register-arrow {
-      width: 17px;
-      height: 17px;
-      fill: currentColor;
-    }
-
-    .music-toggle {
-      position: absolute;
-      z-index: 2;
-      right: max(24px, env(safe-area-inset-right));
-      bottom: max(24px, env(safe-area-inset-bottom));
-      display: grid;
-      width: 48px;
-      height: 48px;
-      padding: 0;
-      place-items: center;
-      border: 1px solid rgb(229 203 143 / 38%);
-      border-radius: 50%;
-      background: rgb(5 12 21 / 72%);
-      color: #edb64e;
-      font-family: inherit;
-      cursor: pointer;
-      -webkit-backdrop-filter: blur(8px);
-      backdrop-filter: blur(8px);
-      transition: border-color 160ms ease, background 160ms ease;
-    }
-
-    .music-toggle:hover {
-      border-color: #edb64e;
-      background: rgb(5 12 21 / 92%);
-    }
-
-    .music-toggle:focus-visible {
-      outline: 2px solid #f5f0df;
-      outline-offset: 4px;
-    }
-
-    .music-toggle svg {
-      width: 21px;
-      height: 21px;
-      fill: currentColor;
-    }
-
-    .music-toggle .icon-muted {
-      display: none;
-    }
-
-    .music-toggle[aria-pressed="false"] .icon-muted {
-      display: block;
-    }
-
-    .music-toggle[aria-pressed="false"] .icon-sound {
-      display: none;
     }
 
     .identity {
@@ -374,34 +421,1294 @@
       }
     }
 
-    @media (max-width: 1000px) {
-      .topbar {
-        gap: 20px;
-        padding-inline: 28px;
-      }
+    .btn-gold {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 34px;
+      background: linear-gradient(135deg, #e8c27e 0%, #caa049 50%, #9e7323 100%);
+      color: #0b0f16;
+      border: 1px solid #fae8be;
+      border-radius: 4px;
+      font-family: var(--font-heading);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
 
-      .nav-links {
-        gap: 18px;
-      }
-
-      .brand-logo {
-        width: clamp(160px, 19vw, 190px);
-      }
-
-      .register-link {
-        min-height: 44px;
-        gap: 8px;
-        padding-inline: 16px;
-        font-size: 20px;
-      }
+    .btn-gold:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(212, 175, 55, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+      background: linear-gradient(135deg, #f5d496 0%, #d8ae57 50%, #af822e 100%);
     }
 
     @media (max-width: 760px) {
+      .identity {
+        top: 46%;
+        width: min(82vw, 420px);
+      }
+    }
+
+    /* ========================================================
+       SHARED SECTION STYLES & NUMBER FLOURISHES
+       ======================================================== */
+    .magical-section {
+      position: relative;
+      padding: clamp(80px, 9vw, 130px) clamp(20px, 5vw, 68px);
+      border-bottom: 1px solid rgba(229, 203, 143, 0.12);
+      background-color: var(--bg-dark);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      scroll-margin-top: 76px;
+    }
+
+    #register {
+      scroll-margin-top: 96px;
+    }
+
+    .section-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Section Number & Flourish Header (From Reference Image!) */
+    .section-number-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: clamp(40px, 5vw, 64px);
+      text-align: center;
+    }
+
+    .section-num {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 6.5vw, 84px);
+      line-height: 0.9;
+      color: #f0cf8a;
+      letter-spacing: 3px;
+      text-shadow: 0 0 24px rgba(240, 207, 138, 0.45);
+      margin-bottom: 4px;
+      user-select: none;
+    }
+
+    .section-flourish {
+      width: clamp(140px, 16vw, 200px);
+      height: 24px;
+      margin-bottom: 14px;
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-heading);
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: #caa049;
+      margin-bottom: 8px;
+    }
+
+    .section-main-title {
+      font-family: var(--font-heading);
+      font-size: clamp(28px, 3.4vw, 44px);
+      font-weight: 700;
+      color: #faeed2;
+      letter-spacing: 1.5px;
+      margin: 0 0 14px;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+    }
+
+    .section-desc {
+      font-family: var(--font-body);
+      font-size: clamp(17px, 1.25vw, 19.5px);
+      color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto;
+      line-height: 1.7;
+      letter-spacing: 0.2px;
+    }
+
+    /* ========================================================
+       THE MAGICAL ORNATE BOX (Pixel-matched to Section 02)
+       ======================================================== */
+    .magical-box {
+      position: relative;
+      background: linear-gradient(165deg, rgba(10, 16, 25, 0.86) 0%, rgba(6, 10, 18, 0.94) 100%);
+      border: 1px solid var(--border-gold);
+      box-shadow:
+        0 20px 48px rgba(0, 0, 0, 0.72),
+        inset 0 0 22px rgba(212, 175, 55, 0.05),
+        0 0 18px rgba(212, 175, 55, 0.08);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: clamp(26px, 3.5vw, 42px);
+      color: #efe8db;
+      border-radius: 2px;
+      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .magical-box:hover {
+      border-color: var(--border-gold-glow);
+      box-shadow:
+        0 24px 58px rgba(0, 0, 0, 0.82),
+        inset 0 0 32px rgba(212, 175, 55, 0.1),
+        0 0 28px rgba(212, 175, 55, 0.22);
+      transform: translateY(-3px);
+    }
+
+    /* Precise Corner Filigree Brackets */
+    .box-corner {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      pointer-events: none;
+    }
+
+    .box-corner--tl {
+      top: -4px;
+      left: -4px;
+      border-top: 2px solid #e5c17d;
+      border-left: 2px solid #e5c17d;
+    }
+
+    .box-corner--tr {
+      top: -4px;
+      right: -4px;
+      border-top: 2px solid #e5c17d;
+      border-right: 2px solid #e5c17d;
+    }
+
+    .box-corner--bl {
+      bottom: -4px;
+      left: -4px;
+      border-bottom: 2px solid #e5c17d;
+      border-left: 2px solid #e5c17d;
+    }
+
+    .box-corner--br {
+      bottom: -4px;
+      right: -4px;
+      border-bottom: 2px solid #e5c17d;
+      border-right: 2px solid #e5c17d;
+    }
+
+    .box-corner::after {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: #f5da9e;
+      transform: rotate(45deg);
+      box-shadow: 0 0 6px rgba(245, 218, 158, 0.9);
+    }
+
+    .box-corner--tl::after { top: -2px; left: -2px; }
+    .box-corner--tr::after { top: -2px; right: -2px; }
+    .box-corner--bl::after { bottom: -2px; left: -2px; }
+    .box-corner--br::after { bottom: -2px; right: -2px; }
+
+    /* Box Titles and Headers */
+    .box-header-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 6px;
+    }
+
+    .box-sparkle {
+      color: #dfba70;
+      font-size: 13px;
+      filter: drop-shadow(0 0 6px rgba(223, 186, 112, 0.7));
+    }
+
+    .box-title {
+      font-family: var(--font-heading);
+      font-size: clamp(24px, 2.6vw, 32px);
+      font-weight: 700;
+      color: #f3d28b;
+      letter-spacing: 2px;
+      text-align: center;
+      margin: 0;
+      text-shadow: 0 0 16px rgba(243, 210, 139, 0.38);
+    }
+
+    .box-divider {
+      position: relative;
+      width: 100%;
+      max-width: 200px;
+      height: 14px;
+      margin: 6px auto 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .box-divider::before {
+      content: "";
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(229, 193, 125, 0.65), transparent);
+    }
+
+    .box-divider::after {
+      content: "✦";
+      position: absolute;
+      color: #e5c17d;
+      font-size: 9px;
+      background: #080d15;
+      padding: 0 6px;
+    }
+
+    .box-body {
+      font-family: var(--font-body);
+      font-size: clamp(17px, 1.35vw, 19px);
+      line-height: 1.7;
+      color: #e5ded0;
+    }
+
+    .box-body p {
+      margin: 0 0 16px;
+    }
+
+    .box-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* List items inside ornate box */
+    .box-list {
+      list-style: none;
+      padding: 0;
+      margin: 18px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .box-list-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .box-list-star {
+      color: #e8c27e;
+      font-size: 14px;
+      line-height: 1.6;
+      flex: 0 0 auto;
+    }
+
+    .box-list-content strong {
+      color: #fce8bb;
+      font-family: var(--font-heading);
+      font-size: 17px;
+      letter-spacing: 0.5px;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* ========================================================
+       SECTION 01: ABOUT BLACK RABBIT & HACKWARTS
+       ======================================================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(32px, 5vw, 56px);
+      align-items: center;
+    }
+
+    .about-story {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .about-tag {
+      font-family: var(--font-heading);
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: #dfb66c;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .about-heading {
+      font-family: var(--font-heading);
+      font-size: clamp(26px, 3vw, 36px);
+      font-weight: 700;
+      color: #faeed4;
+      line-height: 1.3;
+      margin: 0;
+    }
+
+    .about-text {
+      font-size: clamp(17px, 1.3vw, 19px);
+      color: #dbd2c2;
+      line-height: 1.75;
+      margin: 0;
+    }
+
+    .about-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .metric-card {
+      background: rgba(12, 18, 28, 0.7);
+      border: 1px solid rgba(229, 193, 125, 0.28);
+      border-radius: 4px;
+      padding: 16px 20px;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .metric-card:hover {
+      border-color: #e5c17d;
+      transform: translateY(-2px);
+    }
+
+    .metric-val {
+      font-family: var(--font-display);
+      font-size: clamp(38px, 4vw, 52px);
+      color: #f5da9e;
+      line-height: 1;
+      margin-bottom: 4px;
+      text-shadow: 0 0 14px rgba(245, 218, 158, 0.35);
+    }
+
+    .metric-lbl {
+      font-family: var(--font-ui);
+      font-size: 13.5px;
+      color: #b5ac98;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Floating Sorting Hat Visual Container */
+    .sorting-hat-showcase {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hat-glow-ring {
+      position: absolute;
+      width: min(80vw, 360px);
+      height: min(80vw, 360px);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 175, 55, 0.16) 0%, rgba(212, 175, 55, 0.04) 50%, transparent 70%);
+      pointer-events: none;
+      filter: blur(20px);
+    }
+
+    .sorting-hat-img {
+      width: min(82vw, 380px);
+      height: auto;
+      border-radius: 12px;
+      filter: drop-shadow(0 16px 36px rgba(0, 0, 0, 0.85));
+      animation: levitate-hat 5.5s ease-in-out infinite;
+      transition: transform 0.3s ease;
+    }
+
+    .sorting-hat-img:hover {
+      transform: scale(1.03);
+    }
+
+    .hat-caption {
+      margin-top: 18px;
+      text-align: center;
+      font-family: var(--font-heading);
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: #e5c17d;
+      font-style: italic;
+    }
+
+    @keyframes levitate-hat {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-12px) rotate(-1.5deg);
+      }
+    }
+
+    /* ========================================================
+       SECTION 02: VISION & THE THREE TRIALS (WITH OWL & BOXES)
+       ======================================================== */
+    .trials-section {
+      background:
+        radial-gradient(ellipse at 50% 20%, rgba(14, 24, 38, 0.6) 0%, transparent 70%),
+        linear-gradient(180deg, #070a0f 0%, #0a0e16 50%, #070a0f 100%);
+    }
+
+    .section-02-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(32px, 5vw, 64px);
+      align-items: start;
+    }
+
+    .col-left {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    .col-right {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    /* Snowy Owl Delivering Letter Showcase */
+    .owl-showcase {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .owl-img-wrap {
+      position: relative;
+      width: min(80vw, 340px);
+      animation: float-owl 4.8s ease-in-out infinite;
+    }
+
+    .owl-glow {
+      position: absolute;
+      inset: -10%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 194, 126, 0.22) 0%, transparent 65%);
+      filter: blur(24px);
+      pointer-events: none;
+    }
+
+    .owl-image {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      filter: drop-shadow(0 14px 34px rgba(0, 0, 0, 0.85));
+      border: 1px solid rgba(229, 193, 125, 0.35);
+      transition: transform 0.3s ease;
+    }
+
+    .owl-image:hover {
+      transform: scale(1.02);
+    }
+
+    .owl-caption {
+      margin-top: 14px;
+      font-family: var(--font-heading);
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: #f1dfba;
+      font-style: italic;
+    }
+
+    @keyframes float-owl {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-10px) rotate(1deg);
+      }
+    }
+
+    /* Long-Term Value & Impact Full Width Box */
+    .impact-row {
+      margin-top: clamp(36px, 5vw, 56px);
+    }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .impact-item {
+      background: rgba(14, 20, 30, 0.55);
+      border: 1px solid rgba(229, 193, 125, 0.22);
+      border-radius: 4px;
+      padding: 20px;
+    }
+
+    .impact-item-title {
+      font-family: var(--font-heading);
+      font-size: 17px;
+      font-weight: 700;
+      color: #f4d493;
+      margin: 0 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .impact-item-text {
+      font-size: 16px;
+      color: #cfc6b5;
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* ========================================================
+       SECTION 03: THE THREE HOUSES OF HACKWARTS
+       ======================================================== */
+    .houses-section {
+      background:
+        radial-gradient(circle at 50% 0%, rgba(20, 30, 48, 0.4) 0%, transparent 60%),
+        #06080e;
+    }
+
+    /* House Selector Tabs */
+    .house-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+
+    .house-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border: 1px solid rgba(229, 193, 125, 0.32);
+      background: rgba(12, 17, 26, 0.7);
+      color: #d8cebe;
+      border-radius: 4px;
+      font-family: var(--font-heading);
+      font-size: 15px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      transition: all 0.2s ease;
+    }
+
+    .house-tab-btn:hover {
+      border-color: #e5c17d;
+      color: #f8ecd0;
+      transform: translateY(-2px);
+    }
+
+    .house-tab-btn.is-active {
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .house-tab-btn[data-house="slytherin"].is-active {
+      border-color: #2ecc71;
+      background: rgba(16, 44, 30, 0.85);
+      box-shadow: 0 0 18px rgba(46, 204, 113, 0.35);
+    }
+
+    .house-tab-btn[data-house="gryffindor"].is-active {
+      border-color: #e74c3c;
+      background: rgba(56, 18, 18, 0.85);
+      box-shadow: 0 0 18px rgba(231, 76, 60, 0.35);
+    }
+
+    .house-tab-btn[data-house="ravenclaw"].is-active {
+      border-color: #3498db;
+      background: rgba(18, 36, 62, 0.85);
+      box-shadow: 0 0 18px rgba(52, 152, 219, 0.35);
+    }
+
+    .house-tab-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .dot-slytherin { background: #2ecc71; }
+    .dot-gryffindor { background: #e74c3c; }
+    .dot-ravenclaw { background: #3498db; }
+
+    /* House Featured Card */
+    .house-featured {
+      position: relative;
+      border-radius: 4px;
+      padding: clamp(32px, 5vw, 56px);
+      margin-bottom: 48px;
+      border: 1px solid rgba(229, 193, 125, 0.35);
+      background-size: cover;
+      background-position: center;
+      transition: all 0.4s ease;
+      overflow: hidden;
+    }
+
+    .house-featured::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(8, 12, 18, 0.94) 0%, rgba(6, 9, 15, 0.88) 100%);
+      z-index: 1;
+    }
+
+    .house-featured-inner {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: clamp(28px, 4vw, 52px);
+      align-items: center;
+    }
+
+    .house-crest-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .house-crest-img {
+      width: min(70vw, 290px);
+      height: auto;
+      border-radius: 8px;
+      filter: drop-shadow(0 14px 32px rgba(0, 0, 0, 0.85));
+      border: 1px solid rgba(229, 193, 125, 0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .house-crest-img:hover {
+      transform: scale(1.03);
+    }
+
+    .house-crest-motto {
+      margin-top: 14px;
+      font-family: var(--font-heading);
+      font-size: 14.5px;
+      letter-spacing: 2px;
+      color: #e5c17d;
+      font-style: italic;
+    }
+
+    .house-details-col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .house-welcome-title {
+      font-family: var(--font-heading);
+      font-size: clamp(26px, 2.8vw, 36px);
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: 1.5px;
+    }
+
+    .house-traits-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-heading);
+      font-size: 13.5px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+
+    .house-desc {
+      font-family: var(--font-body);
+      font-size: clamp(17px, 1.25vw, 19px);
+      color: #ded6c8;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .house-wizards-title {
+      font-family: var(--font-heading);
+      font-size: 15px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #e8c27e;
+      margin: 12px 0 6px;
+    }
+
+    .house-wizards-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .wizard-pill {
+      background: rgba(14, 20, 30, 0.7);
+      border: 1px solid rgba(229, 193, 125, 0.28);
+      border-radius: 4px;
+      padding: 6px 14px;
+      font-family: var(--font-ui);
+      font-size: 13.5px;
+      color: #efe8db;
+      letter-spacing: 0.5px;
+    }
+
+    /* 3-Houses Mini Showcase Grid (Matching Section 03 in Image 1!) */
+    .houses-all-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .house-card {
+      background: linear-gradient(180deg, rgba(12, 17, 26, 0.88), rgba(7, 10, 16, 0.94));
+      border: 1px solid rgba(229, 193, 125, 0.25);
+      border-radius: 4px;
+      padding: 22px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .house-card:hover {
+      transform: translateY(-4px);
+      border-color: #e5c17d;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.65);
+    }
+
+    .house-card-crest {
+      width: 100px;
+      height: 100px;
+      border-radius: 6px;
+      object-fit: cover;
+      margin-bottom: 14px;
+      border: 1px solid rgba(229, 193, 125, 0.3);
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.6));
+    }
+
+    .house-card-name {
+      font-family: var(--font-heading);
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 6px;
+      letter-spacing: 1.5px;
+    }
+
+    .house-card-traits {
+      font-family: var(--font-ui);
+      font-size: 13.5px;
+      color: #baa78c;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    /* ========================================================
+       SECTION 04: THE FIVE SPELLBOUND TRACKS
+       ======================================================== */
+    .tracks-section {
+      background:
+        radial-gradient(ellipse at center, rgba(18, 26, 40, 0.4) 0%, transparent 70%),
+        #070a0f;
+    }
+
+    .tracks-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 26px;
+    }
+
+    .track-card {
+      position: relative;
+    }
+
+    .track-num-badge {
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: #dfb66c;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .track-title {
+      font-family: var(--font-heading);
+      font-size: 21px;
+      font-weight: 700;
+      color: #faeed4;
+      margin: 0 0 10px;
+      line-height: 1.35;
+      letter-spacing: 1px;
+    }
+
+    .track-subtitle {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #caa049;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .track-desc {
+      font-family: var(--font-body);
+      font-size: 17px;
+      color: #d1c7b5;
+      line-height: 1.65;
+      margin: 0 0 16px;
+    }
+
+    .track-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: auto;
+    }
+
+    .track-tag {
+      background: rgba(14, 22, 34, 0.7);
+      border: 1px solid rgba(229, 193, 125, 0.2);
+      border-radius: 3px;
+      padding: 3px 10px;
+      font-family: var(--font-ui);
+      font-size: 12px;
+      color: #b5ac98;
+    }
+
+    /* ========================================================
+       SECTION 05: 24-HOUR WIZARDING TIMELINE
+       ======================================================== */
+    .schedule-section {
+      background: #06090e;
+    }
+
+    .timeline-wrap {
+      position: relative;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .timeline-wrap::before {
+      content: "";
+      position: absolute;
+      top: 10px;
+      bottom: 10px;
+      left: 32px;
+      width: 2px;
+      background: linear-gradient(180deg, transparent, rgba(229, 193, 125, 0.6) 10%, rgba(229, 193, 125, 0.6) 90%, transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 76px;
+      margin-bottom: 32px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 23px;
+      top: 14px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #080d14;
+      border: 2px solid #e5c17d;
+      box-shadow: 0 0 10px rgba(229, 193, 125, 0.6);
+      display: grid;
+      place-items: center;
+    }
+
+    .timeline-dot::after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #f5da9e;
+    }
+
+    .timeline-card {
+      background: linear-gradient(165deg, rgba(12, 18, 28, 0.85), rgba(7, 10, 16, 0.9));
+      border: 1px solid rgba(229, 193, 125, 0.3);
+      border-radius: 4px;
+      padding: 20px 24px;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+
+    .timeline-card:hover {
+      border-color: #f0cf8a;
+      transform: translateX(4px);
+    }
+
+    .timeline-time-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(229, 193, 125, 0.12);
+      border: 1px solid rgba(229, 193, 125, 0.35);
+      border-radius: 4px;
+      padding: 3px 12px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      color: #f4d493;
+      margin-bottom: 8px;
+    }
+
+    .timeline-event-title {
+      font-family: var(--font-heading);
+      font-size: 20px;
+      font-weight: 700;
+      color: #fbf0d8;
+      margin: 0 0 6px;
+    }
+
+    .timeline-event-desc {
+      font-size: 16px;
+      color: #cec5b4;
+      margin: 0;
+      line-height: 1.55;
+    }
+
+    /* ========================================================
+       SECTION 06: RULES, CRITERIA & FAQS
+       ======================================================== */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(32px, 5vw, 56px);
+      align-items: start;
+    }
+
+    .rules-card {
+      position: relative;
+    }
+
+    .faq-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .faq-item {
+      background: linear-gradient(165deg, rgba(11, 16, 26, 0.82), rgba(6, 9, 15, 0.9));
+      border: 1px solid rgba(229, 193, 125, 0.28);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .faq-item:hover,
+    .faq-item.is-open {
+      border-color: #e5c17d;
+    }
+
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 18px 22px;
+      font-family: var(--font-heading);
+      font-size: 17.5px;
+      font-weight: 600;
+      color: #f7eed8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .faq-icon {
+      font-size: 20px;
+      color: #e5c17d;
+      transition: transform 0.2s ease;
+    }
+
+    .faq-item.is-open .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 22px 18px;
+      font-family: var(--font-body);
+      font-size: 16.5px;
+      color: #c7beab;
+      line-height: 1.65;
+    }
+
+    .faq-item.is-open .faq-answer {
+      display: block;
+    }
+
+    /* ========================================================
+       SECTION 07: ORGANIZERS & REGISTRATION
+       ======================================================== */
+    .contact-section {
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(20, 32, 50, 0.5) 0%, transparent 70%),
+        #05080d;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: clamp(32px, 5vw, 64px);
+      align-items: start;
+    }
+
+    .leads-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .lead-card {
+      background: linear-gradient(165deg, rgba(12, 18, 28, 0.8), rgba(7, 11, 18, 0.92));
+      border: 1px solid rgba(229, 193, 125, 0.3);
+      border-radius: 4px;
+      padding: 22px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      transition: all 0.2s ease;
+    }
+
+    .lead-card:hover {
+      border-color: #e5c17d;
+      transform: translateY(-2px);
+    }
+
+    .lead-info-name {
+      font-family: var(--font-heading);
+      font-size: 21px;
+      font-weight: 700;
+      color: #faeed5;
+      margin: 0 0 4px;
+    }
+
+    .lead-info-role {
+      font-family: var(--font-ui);
+      font-size: 13.5px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #dfb66c;
+      margin: 0 0 8px;
+    }
+
+    .lead-phone-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #efe8db;
+      font-family: var(--font-ui);
+      font-size: 15px;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .lead-phone-link:hover {
+      color: #f5da9e;
+    }
+
+    .lead-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px;
+      border: 1px solid #bf9550;
+      border-radius: 4px;
+      background: rgba(229, 193, 125, 0.12);
+      color: #f2ce84;
+      font-family: var(--font-heading);
+      font-size: 13.5px;
+      letter-spacing: 1px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .lead-action-btn:hover {
+      background: #caa049;
+      color: #070a0f;
+    }
+
+    /* Registration Form Box */
+    .reg-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-family: var(--font-heading);
+      font-size: 14px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #e5c17d;
+    }
+
+    .form-input,
+    .form-select {
+      background: rgba(8, 12, 19, 0.75);
+      border: 1px solid rgba(229, 193, 125, 0.35);
+      border-radius: 4px;
+      padding: 12px 16px;
+      color: #f7eed8;
+      font-family: var(--font-ui);
+      font-size: 15px;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      border-color: #f5da9e;
+      box-shadow: 0 0 14px rgba(245, 218, 158, 0.25);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .reg-success-msg {
+      display: none;
+      padding: 16px 20px;
+      border-radius: 4px;
+      background: rgba(46, 204, 113, 0.15);
+      border: 1px solid #2ecc71;
+      color: #d4edda;
+      text-align: center;
+      font-family: var(--font-heading);
+      font-size: 15px;
+      letter-spacing: 1px;
+    }
+
+    /* ========================================================
+       FOOTER
+       ======================================================== */
+    .site-footer {
+      border-top: 1px solid rgba(229, 193, 125, 0.25);
+      background: #04060a;
+      padding: 60px 24px 36px;
+      text-align: center;
+      position: relative;
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .footer-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+    }
+
+    .footer-crest {
+      width: 140px;
+      height: auto;
+      filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
+    }
+
+    .footer-rabbit {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 1px solid #e8c27e;
+      object-fit: cover;
+    }
+
+    .footer-tagline {
+      font-family: var(--font-heading);
+      font-size: 19px;
+      font-style: italic;
+      color: #e5c17d;
+      letter-spacing: 2px;
+      margin: 0;
+    }
+
+    .footer-credits {
+      font-family: var(--font-ui);
+      font-size: 13.5px;
+      color: #9c9380;
+      margin: 0;
+    }
+
+    /* ========================================================
+       RESPONSIVE DESIGN
+       ======================================================== */
+    @media (max-width: 1024px) {
+      .topbar {
+        padding: 0 24px;
+        gap: 16px;
+      }
+
+      .about-grid,
+      .section-02-grid,
+      .house-featured-inner,
+      .faq-grid,
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      .tracks-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .houses-all-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+
+      .impact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
       .topbar {
         display: grid;
-        min-height: 108px;
+        min-height: 106px;
         grid-template-columns: minmax(0, 1fr) auto;
-        grid-template-rows: 62px 42px;
+        grid-template-rows: 58px 44px;
         gap: 0 16px;
         padding: 0 18px 4px;
       }
@@ -410,7 +1717,7 @@
         grid-column: 1 / -1;
         grid-row: 2;
         justify-content: flex-start;
-        gap: 26px;
+        gap: 22px;
         width: 100%;
         margin: 0;
         overflow-x: auto;
@@ -423,41 +1730,37 @@
       }
 
       .nav-link {
-        padding: 9px 0;
-        font-size: 17px;
-      }
-
-      .brand {
-        grid-column: 1;
-        grid-row: 1;
+        padding: 8px 0;
+        font-size: 14px;
       }
 
       .brand-logo {
-        width: clamp(138px, 39vw, 178px);
+        width: 155px;
       }
 
       .register-link {
-        grid-column: 2;
-        grid-row: 1;
-        min-height: 40px;
+        min-height: 38px;
         gap: 4px;
-        padding-inline: 8px;
-        font-size: 17px;
+        padding: 0 14px;
+        font-size: 13px;
       }
 
-      .register-arrow {
-        width: 14px;
-        height: 14px;
+      .tracks-grid,
+      .houses-all-grid,
+      .about-metrics,
+      .form-row {
+        grid-template-columns: 1fr;
       }
 
-      .identity {
-        top: 46%;
-        width: min(82vw, 420px);
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
       }
 
-      .music-toggle {
-        right: max(18px, env(safe-area-inset-right));
-        bottom: max(18px, env(safe-area-inset-bottom));
+      .btn-gold,
+      .btn-glass {
+        width: 100%;
       }
     }
 
@@ -475,63 +1778,1017 @@
         transition-duration: 0.01ms !important;
       }
 
-      .wand-orbit {
-        animation: none;
+      .wand-orbit,
+      .sorting-hat-img,
+      .owl-img-wrap,
+      .hero-scroll-hint {
+        animation: none !important;
       }
     }
   </style>
 </head>
 <body>
+
+  <!-- Loading Screen (Feature-flag controlled) -->
   <div class="loading-screen" role="status" aria-live="polite" aria-label="Loading Hackwarts" hidden>
     <video class="loading-video" muted playsinline preload="none" aria-hidden="true">
       <source src="Video%20Project%208.mp4" type="video/mp4">
     </video>
   </div>
 
-  <main class="scene" aria-label="Hackwarts">
+  <!-- Main Fixed Topbar Navigation (Matching Navbar Reference Image) -->
+  <nav class="topbar" aria-label="Main navigation">
+    <a class="brand" href="#home" title="Hackwarts — The Wizarding Hackathon">
+      <img class="brand-logo" src="Golden%20Hackwarts%20Wizarding%20Emblem.png" alt="Hackwarts — The Wizarding Hackathon">
+    </a>
+
+    <div class="nav-links">
+      <a class="nav-link" href="#home" aria-current="page">Home</a>
+      <a class="nav-link" href="#about">About</a>
+      <a class="nav-link" href="#houses">Houses</a>
+      <a class="nav-link" href="#tracks">Tracks</a>
+      <a class="nav-link" href="#schedule">Schedule</a>
+      <a class="nav-link" href="#faqs">FAQs</a>
+      <a class="nav-link" href="#contact">Contact</a>
+    </div>
+
+    <a class="register-link" href="#register">
+      Register Now
+      <svg class="register-arrow" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M13.2 5.2 20 12l-6.8 6.8-1.4-1.4 4.4-4.4H4v-2h12.2l-4.4-4.4z"/>
+      </svg>
+    </a>
+  </nav>
+
+  <!-- ========================================================
+       HERO SCENE
+       ======================================================== -->
+  <header class="scene" id="home" aria-label="Hackwarts Hero">
     <video class="backdrop" autoplay muted loop playsinline aria-hidden="true">
       <source src="main%20background%20video.mp4" type="video/mp4">
     </video>
-    <audio class="background-music" loop preload="metadata">
-      <source src="back_song.mp4" type="audio/mp4">
-    </audio>
-
-    <nav class="topbar" aria-label="Main navigation">
-      <a class="brand" href="#home">
-        <img class="brand-logo" src="Golden%20Hackwarts%20Wizarding%20Emblem.png" alt="Hackwarts — The Wizarding Hackathon">
-      </a>
-
-      <div class="nav-links">
-        <a class="nav-link" href="#home" aria-current="page">Home</a>
-        <a class="nav-link" href="#about">About</a>
-        <a class="nav-link" href="#houses">Houses</a>
-        <a class="nav-link" href="#tracks">Tracks</a>
-        <a class="nav-link" href="#schedule">Schedule</a>
-        <a class="nav-link" href="#faqs">FAQs</a>
-        <a class="nav-link" href="#contact">Contact</a>
-      </div>
-
-      <a class="register-link" href="#register">
-        Register Now
-        <svg class="register-arrow" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M13.2 5.2 20 12l-6.8 6.8-1.4-1.4 4.4-4.4H4v-2h12.2l-4.4-4.4z"/>
-        </svg>
-      </a>
-    </nav>
 
     <div class="identity">
       <img src="Golden%20Hackwarts%20Wizarding%20Emblem.png" alt="Hackwarts wizarding emblem">
     </div>
+  </header>
 
-    <button class="music-toggle" type="button" aria-label="Play background music" aria-pressed="false" title="Play background music">
-      <svg class="icon-sound" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/>
-      </svg>
-      <svg class="icon-muted" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M3 9v6h4l5 4V5L7 9H3zm13.59 3 2.12 2.12-1.41 1.41L15.17 13.4l-2.12 2.13-1.42-1.42L13.76 12l-2.13-2.12 1.42-1.42 2.12 2.13 2.13-2.13 1.41 1.42L16.59 12z"/>
-      </svg>
-    </button>
-  </main>
+  <!-- ========================================================
+       SECTION 01: ABOUT THE COMMUNITY & EVENT (WITH SORTING HAT)
+       ======================================================== -->
+  <section class="magical-section" id="about">
+    <div class="section-container">
+      <div class="section-number-header">
+        <span class="section-num">01</span>
+        <svg class="section-flourish" viewBox="0 0 160 20" fill="none">
+          <path d="M4 10 C 35 2, 60 18, 80 10 C 100 2, 125 18, 156 10" stroke="url(#goldGrad01)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="80" cy="10" r="3" fill="#e8c27e"/>
+          <defs>
+            <linearGradient id="goldGrad01" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="transparent"/>
+              <stop offset="25%" stop-color="#f0cf8a"/>
+              <stop offset="75%" stop-color="#c59b43"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="section-eyebrow">Community & Event Profile</span>
+        <h2 class="section-main-title">The Legend of Hackwarts</h2>
+        <p class="section-desc">Born from the collaborative spirit of Black Rabbit, uniting passionate creators where technology transcends ordinary code.</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-story">
+          <div class="about-tag">
+            <span>✦</span> 1. About The Community: Black Rabbit
+          </div>
+          <p class="about-text">
+            <strong>Black Rabbit</strong> is a student-focused technology community that brings together students who are curious about technology, enjoy solving problems, and want to develop practical skills.
+          </p>
+          <p class="about-text">
+            Black Rabbit organizes technical events such as <em>Capture the Flag (CTF) challenges</em>, hackathons, technical talks, workshops, and interactive learning sessions. These activities encourage students to experiment with new tools, strengthen foundations, and understand how technical concepts translate into real-world architectures.
+          </p>
+          <p class="about-text">
+            The community fosters an open and supportive environment regardless of background or initial skill level. Whether beginning your technical journey or already equipped with production experience, Black Rabbit champions curiosity, continuous improvement, responsible experimentation, and true collaboration.
+          </p>
+
+          <div class="about-metrics">
+            <div class="metric-card">
+              <div class="metric-val">250+</div>
+              <div class="metric-lbl">Active Participants</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val">4–5</div>
+              <div class="metric-lbl">Wizards Per Team</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val">24h</div>
+              <div class="metric-lbl">Offline Hackathon</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val">3</div>
+              <div class="metric-lbl">Grand Trials</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sorting-hat-showcase">
+          <div class="hat-glow-ring"></div>
+          <img class="sorting-hat-img" src="assest/sorting_hat.jpg" alt="The Sorting Hat of Hackwarts">
+          <div class="hat-caption">
+            “There's nothing hidden in your head the Sorting Hat cannot see...”
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 02: VISION & THE THREE TRIALS (WITH THE ORNATE BOXES & OWL)
+       ======================================================== -->
+  <section class="magical-section trials-section" id="overview">
+    <div class="section-container">
+      <div class="section-number-header">
+        <span class="section-num">02</span>
+        <svg class="section-flourish" viewBox="0 0 160 20" fill="none">
+          <path d="M4 10 C 35 2, 60 18, 80 10 C 100 2, 125 18, 156 10" stroke="url(#goldGrad02)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="80" cy="10" r="3" fill="#e8c27e"/>
+          <defs>
+            <linearGradient id="goldGrad02" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="transparent"/>
+              <stop offset="25%" stop-color="#f0cf8a"/>
+              <stop offset="75%" stop-color="#c59b43"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="section-eyebrow">Vision & Grand Trials</span>
+        <h2 class="section-main-title">Objectives & Challenges</h2>
+        <p class="section-desc">From foundational cipher trials to live prototypes presented before the grand jury.</p>
+      </div>
+
+      <div class="section-02-grid">
+        <!-- Column Left: Vision & Objectives Box + Snowy Owl -->
+        <div class="col-left">
+          <!-- The Exact Ornate Box from Reference Image -->
+          <article class="magical-box">
+            <span class="box-corner box-corner--tl"></span>
+            <span class="box-corner box-corner--tr"></span>
+            <span class="box-corner box-corner--bl"></span>
+            <span class="box-corner box-corner--br"></span>
+
+            <div class="box-header-wrap">
+              <span class="box-sparkle">✦</span>
+              <h3 class="box-title">Vision & Objectives</h3>
+              <span class="box-sparkle">✦</span>
+            </div>
+            <div class="box-divider"></div>
+
+            <div class="box-body">
+              <p>
+                Our vision is to create an active, welcoming, and student-led technology ecosystem where students can move from learning concepts to applying them in practical situations. We want students to feel encouraged to explore new technical fields, test their ideas, work with others, and develop the confidence to solve real problems.
+              </p>
+              <p>
+                Hackwarts aims to bridge the gap between academic learning and practical experience by giving participants a focused environment to plan, build, test, and present a project. It introduces students to artificial intelligence, cybersecurity, data science, software development, cloud technology, and open innovation.
+              </p>
+              <p>
+                The event strengthens problem-solving, creativity, time management, and communication through live interaction with peers, mentors, and industry judges.
+              </p>
+            </div>
+          </article>
+
+          <!-- Flying Snowy Owl with Hogwarts Acceptance Letter (Matching Image 1 Section 02) -->
+          <div class="owl-showcase">
+            <div class="owl-img-wrap">
+              <div class="owl-glow"></div>
+              <img class="owl-image" src="assest/flying_owl.jpg" alt="Snowy Owl carrying the Hogwarts acceptance letter">
+            </div>
+            <div class="owl-caption">
+              “An invitation to dare, build, and innovate beyond the mundane world.”
+            </div>
+          </div>
+        </div>
+
+        <!-- Column Right: The Three Main Stages Box -->
+        <div class="col-right">
+          <article class="magical-box">
+            <span class="box-corner box-corner--tl"></span>
+            <span class="box-corner box-corner--tr"></span>
+            <span class="box-corner box-corner--bl"></span>
+            <span class="box-corner box-corner--br"></span>
+
+            <div class="box-header-wrap">
+              <span class="box-sparkle">✦</span>
+              <h3 class="box-title">The Three Wizarding Stages</h3>
+              <span class="box-sparkle">✦</span>
+            </div>
+            <div class="box-divider"></div>
+
+            <div class="box-body">
+              <p>
+                The hackathon unfolds through three rigorous, carefully orchestrated stages designed to test foundational logic, collaborative endurance, and persuasive execution:
+              </p>
+
+              <ul class="box-list">
+                <li class="box-list-item">
+                  <span class="box-list-star">✦</span>
+                  <div class="box-list-content">
+                    <strong>Stage 1 — Dementor’s Trial</strong>
+                    <span>Logic, debugging, coding & cipher challenges. Teams solve technical riddles and unlock bonus advantages before project construction starts.</span>
+                  </div>
+                </li>
+
+                <li class="box-list-item">
+                  <span class="box-list-star">✦</span>
+                  <div class="box-list-content">
+                    <strong>Stage 2 — Wizarding Build</strong>
+                    <span>Teams develop practical prototypes based on chosen technical tracks. Dedicated industry mentors provide architectural reviews and guidance.</span>
+                  </div>
+                </li>
+
+                <li class="box-list-item">
+                  <span class="box-list-star">✦</span>
+                  <div class="box-list-content">
+                    <strong>Stage 3 — Triwizard Finale</strong>
+                    <span>Selected finalists take the Great Stage to demonstrate working prototypes, answer rigorous questions, and defend their creations before judges.</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Quick Overview Card -->
+          <article class="magical-box" style="margin-top: 10px;">
+            <span class="box-corner box-corner--tl"></span>
+            <span class="box-corner box-corner--tr"></span>
+            <span class="box-corner box-corner--bl"></span>
+            <span class="box-corner box-corner--br"></span>
+
+            <div class="box-header-wrap">
+              <span class="box-sparkle">✦</span>
+              <h3 class="box-title">Event Overview</h3>
+              <span class="box-sparkle">✦</span>
+            </div>
+            <div class="box-divider"></div>
+
+            <div class="box-body">
+              <p>
+                Hackwarts runs continuously for <strong>24 hours offline</strong>, from <strong>10:00 AM on Day 1</strong> till <strong>10:00 AM on Day 2</strong>.
+              </p>
+              <p>
+                The schedule encompasses registration, house allocation, grand opening ceremony, the first-round trial, intensive building sessions, midnight challenges, final code freeze, live project demos, and the prestigious House Cup coronation.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- Impact & Long-Term Value Box (Full Width) -->
+      <div class="impact-row">
+        <article class="magical-box">
+          <span class="box-corner box-corner--tl"></span>
+          <span class="box-corner box-corner--tr"></span>
+          <span class="box-corner box-corner--bl"></span>
+          <span class="box-corner box-corner--br"></span>
+
+          <div class="box-header-wrap">
+            <span class="box-sparkle">✦</span>
+            <h3 class="box-title">Impact & What Happens After Hackwarts?</h3>
+            <span class="box-sparkle">✦</span>
+          </div>
+          <div class="box-divider"></div>
+
+          <div class="box-body">
+            <p style="text-align: center; max-width: 820px; margin: 0 auto 20px;">
+              Turning an ambitious idea into a working prototype under time pressure builds lasting professional muscle. The artifacts forged here become the cornerstone of your engineering portfolio.
+            </p>
+
+            <div class="impact-grid">
+              <div class="impact-item">
+                <div class="impact-item-title">
+                  <span>✦</span> Practical Experience
+                </div>
+                <p class="impact-item-text">
+                  Moves beyond textbook theories into real-world debugging, git workflows, architectural choices, and rapid iteration under deadlines.
+                </p>
+              </div>
+
+              <div class="impact-item">
+                <div class="impact-item-title">
+                  <span>✦</span> Portfolio & Proof of Work
+                </div>
+                <p class="impact-item-text">
+                  A deployed repository, concise documentation, and recorded demo video that tangibly demonstrates your initiative to recruiters.
+                </p>
+              </div>
+
+              <div class="impact-item">
+                <div class="impact-item-title">
+                  <span>✦</span> Community & Future CTFs
+                </div>
+                <p class="impact-item-text">
+                  Black Rabbit continues nurturing participants post-event through specialized CTFs, advanced engineering talks, and peer-learning pods.
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 03: THE THREE HOUSES (MATCHING REFERENCE IMAGE)
+       ======================================================== -->
+  <section class="magical-section houses-section" id="houses">
+    <div class="section-container">
+      <div class="section-number-header">
+        <span class="section-num">03</span>
+        <svg class="section-flourish" viewBox="0 0 160 20" fill="none">
+          <path d="M4 10 C 35 2, 60 18, 80 10 C 100 2, 125 18, 156 10" stroke="url(#goldGrad03)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="80" cy="10" r="3" fill="#e8c27e"/>
+          <defs>
+            <linearGradient id="goldGrad03" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="transparent"/>
+              <stop offset="25%" stop-color="#f0cf8a"/>
+              <stop offset="75%" stop-color="#c59b43"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="section-eyebrow">House Allegiances</span>
+        <h2 class="section-main-title">The Three Houses of Hackwarts</h2>
+        <p class="section-desc">Every hacker is sorted into a house upon entrance. House points are accrued across cipher trials, mentor milestones, and final evaluations.</p>
+      </div>
+
+      <!-- House Tab Selector -->
+      <div class="house-tabs" role="tablist">
+        <button class="house-tab-btn is-active" data-house="slytherin" role="tab" aria-selected="true">
+          <span class="house-tab-dot dot-slytherin"></span>
+          <span>Slytherin</span>
+        </button>
+        <button class="house-tab-btn" data-house="gryffindor" role="tab" aria-selected="false">
+          <span class="house-tab-dot dot-gryffindor"></span>
+          <span>Gryffindor</span>
+        </button>
+        <button class="house-tab-btn" data-house="ravenclaw" role="tab" aria-selected="false">
+          <span class="house-tab-dot dot-ravenclaw"></span>
+          <span>Ravenclaw</span>
+        </button>
+      </div>
+
+      <!-- Active House Featured Display -->
+      <div class="house-featured" id="houseFeatured">
+        <div class="house-featured-inner">
+          <div class="house-crest-col">
+            <img class="house-crest-img" id="houseCrestImg" src="assest/crest_slytherin.jpg" alt="Slytherin House Crest">
+            <div class="house-crest-motto" id="houseMotto">“Greatness Awaits The Ambitious”</div>
+          </div>
+
+          <div class="house-details-col">
+            <div class="house-traits-badge" id="houseTraitsBadge" style="background: rgba(46, 204, 113, 0.2); border: 1px solid #2ecc71; color: #a3e9b8;">
+              Ambition • Resourcefulness • Cunning
+            </div>
+            <h3 class="house-welcome-title" id="houseTitle" style="color: #6de29d;">Welcome To Slytherin</h3>
+            <p class="house-desc" id="houseDesc">
+              Slytherin produces architects of extraordinary scale and strategic mastery. In the arena of Hackwarts, Slytherin hackers leverage cutting-edge systems, tactical precision, and relentless drive to construct projects that conquer the leaderboard.
+            </p>
+
+            <div class="house-wizards-title">Notable Wizards & Mentors</div>
+            <div class="house-wizards-list" id="houseWizardsList">
+              <span class="wizard-pill">Severus Snape</span>
+              <span class="wizard-pill">Tom Riddle</span>
+              <span class="wizard-pill">Draco Malfoy</span>
+              <span class="wizard-pill">Merlin</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4-Houses Mini Grid (Directly mirroring Image 1 Section 03!) -->
+      <div class="houses-all-grid">
+        <div class="house-card" data-select-house="slytherin">
+          <img class="house-card-crest" src="assest/crest_slytherin.jpg" alt="Slytherin">
+          <h4 class="house-card-name" style="color: #55d98d;">Slytherin</h4>
+          <p class="house-card-traits">Ambition, Resourcefulness & Cunning</p>
+        </div>
+
+        <div class="house-card" data-select-house="gryffindor">
+          <img class="house-card-crest" src="assest/crest_gryffindor.jpg" alt="Gryffindor">
+          <h4 class="house-card-name" style="color: #e76f51;">Gryffindor</h4>
+          <p class="house-card-traits">Bravery, Daring, Nerve & Chivalry</p>
+        </div>
+
+        <div class="house-card" data-select-house="ravenclaw">
+          <img class="house-card-crest" src="assest/crest_ravenclaw.jpg" alt="Ravenclaw">
+          <h4 class="house-card-name" style="color: #5dade2;">Ravenclaw</h4>
+          <p class="house-card-traits">Intelligence, Wisdom, Wit & Creativity</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 04: THE FIVE TECHNICAL TRACKS
+       ======================================================== -->
+  <section class="magical-section tracks-section" id="tracks">
+    <div class="section-container">
+      <div class="section-number-header">
+        <span class="section-num">04</span>
+        <svg class="section-flourish" viewBox="0 0 160 20" fill="none">
+          <path d="M4 10 C 35 2, 60 18, 80 10 C 100 2, 125 18, 156 10" stroke="url(#goldGrad04)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="80" cy="10" r="3" fill="#e8c27e"/>
+          <defs>
+            <linearGradient id="goldGrad04" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="transparent"/>
+              <stop offset="25%" stop-color="#f0cf8a"/>
+              <stop offset="75%" stop-color="#c59b43"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="section-eyebrow">Disciplines of Magic</span>
+        <h2 class="section-main-title">The Five Technical Tracks</h2>
+        <p class="section-desc">Teams select one track to architect and develop their solution during the 24-hour building sprint.</p>
+      </div>
+
+      <div class="tracks-grid">
+        <!-- Track 1 -->
+        <article class="magical-box track-card">
+          <span class="box-corner box-corner--tl"></span>
+          <span class="box-corner box-corner--tr"></span>
+          <span class="box-corner box-corner--bl"></span>
+          <span class="box-corner box-corner--br"></span>
+
+          <div class="track-num-badge">01</div>
+          <span class="track-subtitle">Track One</span>
+          <h3 class="track-title">Charms & Artificial Intelligence</h3>
+          <p class="track-desc">
+            Focuses on intelligent tools, machine learning pipelines, LLM agent workflows, computer vision, and autonomous systems that bring enchanted interactivity to life.
+          </p>
+          <div class="track-tags">
+            <span class="track-tag">LLMs & Agents</span>
+            <span class="track-tag">Computer Vision</span>
+            <span class="track-tag">Automation</span>
+          </div>
+        </article>
+
+        <!-- Track 2 -->
+        <article class="magical-box track-card">
+          <span class="box-corner box-corner--tl"></span>
+          <span class="box-corner box-corner--tr"></span>
+          <span class="box-corner box-corner--bl"></span>
+          <span class="box-corner box-corner--br"></span>
+
+          <div class="track-num-badge">02</div>
+          <span class="track-subtitle">Track Two</span>
+          <h3 class="track-title">Defense Against the Dark Arts</h3>
+          <p class="track-desc">
+            Covers cybersecurity, cryptographic protocols, digital forensics, reverse engineering, threat hunting, and impenetrable security defenses against cyber vulnerabilities.
+          </p>
+          <div class="track-tags">
+            <span class="track-tag">Cybersecurity</span>
+            <span class="track-tag">Digital Forensics</span>
+            <span class="track-tag">Zero Trust</span>
+          </div>
+        </article>
+
+        <!-- Track 3 -->
+        <article class="magical-box track-card">
+          <span class="box-corner box-corner--tl"></span>
+          <span class="box-corner box-corner--tr"></span>
+          <span class="box-corner box-corner--bl"></span>
+          <span class="box-corner box-corner--br"></span>
+
+          <div class="track-num-badge">03</div>
+          <span class="track-subtitle">Track Three</span>
+          <h3 class="track-title">Potions & Data Science</h3>
+          <p class="track-desc">
+            Focuses on analytics, predictive modeling, statistical brewing, big data visualization, and data-driven solutions revealing hidden patterns beneath the surface.
+          </p>
+          <div class="track-tags">
+            <span class="track-tag">Predictive Analytics</span>
+            <span class="track-tag">Data Visualisation</span>
+            <span class="track-tag">ML Pipelines</span>
+          </div>
+        </article>
+
+        <!-- Track 4 -->
+        <article class="magical-box track-card">
+          <span class="box-corner box-corner--tl"></span>
+          <span class="box-corner box-corner--tr"></span>
+          <span class="box-corner box-corner--bl"></span>
+          <span class="box-corner box-corner--br"></span>
+
+          <div class="track-num-badge">04</div>
+          <span class="track-subtitle">Track Four</span>
+          <h3 class="track-title">Magical Engineering</h3>
+          <p class="track-desc">
+            Includes full-stack web and mobile applications, embedded IoT systems, cloud infrastructure, microservices, and practical, scalable engineering implementations.
+          </p>
+          <div class="track-tags">
+            <span class="track-tag">Full-Stack Web</span>
+            <span class="track-tag">IoT Hardware</span>
+            <span class="track-tag">Cloud Native</span>
+          </div>
+        </article>
+
+        <!-- Track 5 -->
+        <article class="magical-box track-card" style="grid-column: 1 / -1;">
+          <span class="box-corner box-corner--tl"></span>
+          <span class="box-corner box-corner--tr"></span>
+          <span class="box-corner box-corner--bl"></span>
+          <span class="box-corner box-corner--br"></span>
+
+          <div class="track-num-badge">05</div>
+          <span class="track-subtitle">Track Five</span>
+          <h3 class="track-title">Department of Mysteries (Open Innovation)</h3>
+          <p class="track-desc">
+            The unbounded realm of open innovation. Projects in sustainability, accessibility, civic technology, community empowerment, and cross-disciplinary wizardry that defy traditional boundaries.
+          </p>
+          <div class="track-tags">
+            <span class="track-tag">Open Innovation</span>
+            <span class="track-tag">Accessibility & Inclusion</span>
+            <span class="track-tag">Social Impact</span>
+            <span class="track-tag">Sustainability</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 05: 24-HOUR WIZARDING TIMELINE
+       ======================================================== -->
+  <section class="magical-section schedule-section" id="schedule">
+    <div class="section-container">
+      <div class="section-number-header">
+        <span class="section-num">05</span>
+        <svg class="section-flourish" viewBox="0 0 160 20" fill="none">
+          <path d="M4 10 C 35 2, 60 18, 80 10 C 100 2, 125 18, 156 10" stroke="url(#goldGrad05)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="80" cy="10" r="3" fill="#e8c27e"/>
+          <defs>
+            <linearGradient id="goldGrad05" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="transparent"/>
+              <stop offset="25%" stop-color="#f0cf8a"/>
+              <stop offset="75%" stop-color="#c59b43"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="section-eyebrow">The Hourglass Scrolls</span>
+        <h2 class="section-main-title">24-Hour Event Timeline</h2>
+        <p class="section-desc">Proposed continuous 24-hour schedule running from 10:00 AM Day 1 to 10:00 AM Day 2.</p>
+      </div>
+
+      <div class="timeline-wrap">
+        <!-- Milestone 1 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-time-badge">Day 1 • 10:00 AM</span>
+            <h3 class="timeline-event-title">Arrival & Great Hall Check-in</h3>
+            <p class="timeline-event-desc">Participant badge pickup, kit distribution, table setup, and initial network connectivity.</p>
+          </div>
+        </div>
+
+        <!-- Milestone 2 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-time-badge">Day 1 • 11:30 AM</span>
+            <h3 class="timeline-event-title">Opening Ceremony & House Allocation</h3>
+            <p class="timeline-event-desc">Welcome address by Black Rabbit leads, key track briefings, rules announcement, and sorting ceremony.</p>
+          </div>
+        </div>
+
+        <!-- Milestone 3 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-time-badge">Day 1 • 12:30 PM</span>
+            <h3 class="timeline-event-title">Stage 1: Dementor's Trial Commences</h3>
+            <p class="timeline-event-desc">A fast-paced sprint of logic, cipher decrypts, and debugging riddles for early house points and advantages.</p>
+          </div>
+        </div>
+
+        <!-- Milestone 4 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-time-badge">Day 1 • 02:00 PM</span>
+            <h3 class="timeline-event-title">Stage 2: Wizarding Build & Lunch</h3>
+            <p class="timeline-event-desc">Hacking sprint begins across all five technical tracks. First mentor checkpoints and design reviews.</p>
+          </div>
+        </div>
+
+        <!-- Milestone 5 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-time-badge">Day 1 • 06:00 PM</span>
+            <h3 class="timeline-event-title">Mentor Review Round 1</h3>
+            <p class="timeline-event-desc">One-on-one architecture reviews, feedback on progress, and technical roadblock assistance.</p>
+          </div>
+        </div>
+
+        <!-- Milestone 6 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-time-badge">Day 1 • 09:30 PM</span>
+            <h3 class="timeline-event-title">Dinner Feast & Midnight Mini-Challenge</h3>
+            <p class="timeline-event-desc">Hearty meal, mini-games, and a secret puzzle challenge to reignite energy into the midnight hacking hours.</p>
+          </div>
+        </div>
+
+        <!-- Milestone 7 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-time-badge">Day 2 • 06:00 AM</span>
+            <h3 class="timeline-event-title">Dawn Sprint & Testing Polish</h3>
+            <p class="timeline-event-desc">Morning refreshments, UI polish, testing scripts, and preparing demo fallback recordings.</p>
+          </div>
+        </div>
+
+        <!-- Milestone 8 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-time-badge">Day 2 • 08:30 AM</span>
+            <h3 class="timeline-event-title">Code Freeze & Repository Submission</h3>
+            <p class="timeline-event-desc">Final git push, repository link submission with README instructions, and video walkthrough upload.</p>
+          </div>
+        </div>
+
+        <!-- Milestone 9 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-time-badge">Day 2 • 09:00 AM</span>
+            <h3 class="timeline-event-title">Stage 3: Triwizard Finale (Presentations)</h3>
+            <p class="timeline-event-desc">Finalist teams take the stage for live demos, system defense, and jury evaluations.</p>
+          </div>
+        </div>
+
+        <!-- Milestone 10 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <span class="timeline-time-badge">Day 2 • 10:00 AM</span>
+            <h3 class="timeline-event-title">House Cup Awards & Closing Ceremony</h3>
+            <p class="timeline-event-desc">Celebration of winning projects, House Cup coronation, awards distribution, and future community roadmap.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 06: RULES, CRITERIA & FAQS
+       ======================================================== -->
+  <section class="magical-section" id="faqs">
+    <div class="section-container">
+      <div class="section-number-header">
+        <span class="section-num">06</span>
+        <svg class="section-flourish" viewBox="0 0 160 20" fill="none">
+          <path d="M4 10 C 35 2, 60 18, 80 10 C 100 2, 125 18, 156 10" stroke="url(#goldGrad06)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="80" cy="10" r="3" fill="#e8c27e"/>
+          <defs>
+            <linearGradient id="goldGrad06" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="transparent"/>
+              <stop offset="25%" stop-color="#f0cf8a"/>
+              <stop offset="75%" stop-color="#c59b43"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="section-eyebrow">Regulations & Guidance</span>
+        <h2 class="section-main-title">Rules, Judging & FAQs</h2>
+        <p class="section-desc">Key submission requirements from the official guidelines and answers to frequent participant queries.</p>
+      </div>
+
+      <div class="faq-grid">
+        <!-- Submission Guidelines & Judging Card (From PDF) -->
+        <div class="rules-card">
+          <article class="magical-box">
+            <span class="box-corner box-corner--tl"></span>
+            <span class="box-corner box-corner--tr"></span>
+            <span class="box-corner box-corner--bl"></span>
+            <span class="box-corner box-corner--br"></span>
+
+            <div class="box-header-wrap">
+              <span class="box-sparkle">✦</span>
+              <h3 class="box-title">Submission Requirements</h3>
+              <span class="box-sparkle">✦</span>
+            </div>
+            <div class="box-divider"></div>
+
+            <div class="box-body">
+              <p>
+                Every participating team must deliver the following by the designated code freeze (08:30 AM Day 2):
+              </p>
+
+              <ul class="box-list">
+                <li class="box-list-item">
+                  <span class="box-list-star">✦</span>
+                  <div class="box-list-content">
+                    <strong>Source Code Repository</strong>
+                    <span>A clean GitHub/GitLab repository link containing commits made during the hackathon.</span>
+                  </div>
+                </li>
+
+                <li class="box-list-item">
+                  <span class="box-list-star">✦</span>
+                  <div class="box-list-content">
+                    <strong>README Documentation</strong>
+                    <span>Clear setup instructions, architecture breakdown, prerequisites, and execution commands.</span>
+                  </div>
+                </li>
+
+                <li class="box-list-item">
+                  <span class="box-list-star">✦</span>
+                  <div class="box-list-content">
+                    <strong>Working Demonstration</strong>
+                    <span>A live working demo or a recorded video fallback showing full functionality.</span>
+                  </div>
+                </li>
+
+                <li class="box-list-item">
+                  <span class="box-list-star">✦</span>
+                  <div class="box-list-content">
+                    <strong>Project Summary</strong>
+                    <span>A concise explanation of the problem solved, tech stack used, and innovations achieved.</span>
+                  </div>
+                </li>
+              </ul>
+
+              <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(229, 193, 125, 0.2);">
+                <strong style="color: #f6dfa3; font-family: var(--font-heading); display: block; margin-bottom: 6px;">Evaluation Rubrics:</strong>
+                <span style="font-size: 15px; color: #cfc6b5;">Innovation • Technical Implementation • Functionality • Relevance • Usability • Presentation & Q&A.</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- FAQ Accordion -->
+        <div class="faq-accordion">
+          <div class="faq-item is-open">
+            <button class="faq-question" type="button">
+              <span>Who can participate in Hackwarts?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              Hackwarts is open to university students across all years and departments who are curious about technology, enjoy solving challenges, and want to build practical applications.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>What is the team size requirement?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              Teams must consist of <strong>4 to 5 members</strong>. You can register as a full team, or individual hackers will have opportunities during the opening hours to team up.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>How are houses allocated to participants?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              During the check-in and opening ceremony, teams are sorted into Gryffindor, Slytherin, or Ravenclaw. Points scored in Stage 1 and milestone checks feed directly into your House Cup total!
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>Is Hackwarts beginner-friendly?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              Absolutely! Black Rabbit prioritizes a welcoming, supportive ecosystem. Seasoned technical mentors will be available on the floor throughout the 24 hours to help with architecture and debugging.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>What should participants bring to the offline venue?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              Bring your laptop, chargers, extension cords, valid student ID card, personal toiletries for the overnight sprint, and your creative magic! High-speed Wi-Fi, power hubs, and meals will be provided.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>What prizes and benefits do participants receive?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              Trophies and awards for track winners, the prestigious House Cup, exclusive wizarding swags, mentorship opportunities, and direct consideration for Black Rabbit's upcoming CTF teams and leadership roles.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       SECTION 07: ORGANIZERS & TEAM REGISTRATION
+       ======================================================== -->
+  <section class="magical-section contact-section" id="contact">
+    <div class="section-container">
+      <div class="section-number-header">
+        <span class="section-num">07</span>
+        <svg class="section-flourish" viewBox="0 0 160 20" fill="none">
+          <path d="M4 10 C 35 2, 60 18, 80 10 C 100 2, 125 18, 156 10" stroke="url(#goldGrad07)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="80" cy="10" r="3" fill="#e8c27e"/>
+          <defs>
+            <linearGradient id="goldGrad07" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="transparent"/>
+              <stop offset="25%" stop-color="#f0cf8a"/>
+              <stop offset="75%" stop-color="#c59b43"/>
+              <stop offset="100%" stop-color="transparent"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="section-eyebrow">Council & Enlistment</span>
+        <h2 class="section-main-title">Council of Prefects & Registration</h2>
+        <p class="section-desc">Connect with the organizing committee or enlist your team directly to secure your seats in the Great Hall.</p>
+      </div>
+
+      <div class="contact-grid">
+        <!-- Organizers Info Column -->
+        <div class="leads-wrap">
+          <article class="magical-box">
+            <span class="box-corner box-corner--tl"></span>
+            <span class="box-corner box-corner--tr"></span>
+            <span class="box-corner box-corner--bl"></span>
+            <span class="box-corner box-corner--br"></span>
+
+            <div class="box-header-wrap">
+              <span class="box-sparkle">✦</span>
+              <h3 class="box-title">Closing Message</h3>
+              <span class="box-sparkle">✦</span>
+            </div>
+            <div class="box-divider"></div>
+
+            <div class="box-body">
+              <p>
+                “Hackwarts represents Black Rabbit’s commitment to practical learning, creativity, and collaboration. The event aims to give students a welcoming platform to build, demonstrate ideas, and grow their technical confidence.”
+              </p>
+            </div>
+          </article>
+
+          <!-- Lead 1: Vedant Sakpal -->
+          <div class="lead-card">
+            <div>
+              <h4 class="lead-info-name">Vedant Sakpal</h4>
+              <p class="lead-info-role">Lead • Black Rabbit</p>
+              <a class="lead-phone-link" href="tel:8010093107">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg>
+                <span>+91 8010093107</span>
+              </a>
+            </div>
+            <a class="lead-action-btn" href="tel:8010093107">Call Lead</a>
+          </div>
+
+          <!-- Lead 2: Sumit Kumar -->
+          <div class="lead-card">
+            <div>
+              <h4 class="lead-info-name">Sumit Kumar</h4>
+              <p class="lead-info-role">Organizer • Black Rabbit</p>
+              <a class="lead-phone-link" href="tel:6026575123">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/></svg>
+                <span>+91 6026575123</span>
+              </a>
+            </div>
+            <a class="lead-action-btn" href="tel:6026575123">Call Organizer</a>
+          </div>
+        </div>
+
+        <!-- Registration Form Box -->
+        <div id="register">
+          <article class="magical-box">
+            <span class="box-corner box-corner--tl"></span>
+            <span class="box-corner box-corner--tr"></span>
+            <span class="box-corner box-corner--bl"></span>
+            <span class="box-corner box-corner--br"></span>
+
+            <div class="box-header-wrap">
+              <span class="box-sparkle">✦</span>
+              <h3 class="box-title">Enlist Your Team</h3>
+              <span class="box-sparkle">✦</span>
+            </div>
+            <div class="box-divider"></div>
+
+            <form class="reg-form" id="hackwartsRegForm">
+              <div class="form-group">
+                <label class="form-label" for="teamName">Team / Coven Name</label>
+                <input class="form-input" type="text" id="teamName" required placeholder="e.g. Order of the Byte">
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="leaderName">Team Lead Name</label>
+                  <input class="form-input" type="text" id="leaderName" required placeholder="e.g. Harry Potter">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="leaderPhone">Contact Phone</label>
+                  <input class="form-input" type="tel" id="leaderPhone" required placeholder="e.g. 9876543210">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="leaderEmail">Email Address</label>
+                  <input class="form-input" type="email" id="leaderEmail" required placeholder="leader@hogwarts.edu">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="teamSize">Team Size (4–5)</label>
+                  <select class="form-select" id="teamSize" required>
+                    <option value="4">4 Members</option>
+                    <option value="5" selected>5 Members</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="housePreference">Preferred House</label>
+                  <select class="form-select" id="housePreference" required>
+                    <option value="Slytherin">Slytherin (Ambition & Cunning)</option>
+                    <option value="Gryffindor">Gryffindor (Bravery & Daring)</option>
+                    <option value="Ravenclaw">Ravenclaw (Wisdom & Wit)</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="chosenTrack">Chosen Track</label>
+                  <select class="form-select" id="chosenTrack" required>
+                    <option value="Charms & AI">Charms & Artificial Intelligence</option>
+                    <option value="Defense Dark Arts">Defense Against the Dark Arts</option>
+                    <option value="Potions Data">Potions & Data Science</option>
+                    <option value="Magical Eng">Magical Engineering</option>
+                    <option value="Dept of Mysteries">Department of Mysteries</option>
+                  </select>
+                </div>
+              </div>
+
+              <button class="btn-gold" type="submit" style="width: 100%; margin-top: 8px;">
+                <span>Cast Registration Spell</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.2L21.6 12l-7.2 2.4L12 21.6 9.6 14.4 2.4 12l7.2-2.4z"/></svg>
+              </button>
+
+              <div class="reg-success-msg" id="regSuccessMsg">
+                ✦ Registration spell cast successfully! You will receive confirmation by owl and email shortly.
+              </div>
+            </form>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================
+       FOOTER
+       ======================================================== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logos">
+        <img class="footer-crest" src="Golden%20Hackwarts%20Wizarding%20Emblem.png" alt="Hackwarts">
+        <img class="footer-rabbit" src="assest/black_rabbit_logo.jpg" alt="Black Rabbit">
+      </div>
+
+      <p class="footer-tagline">“Where Code Becomes Magic.”</p>
+
+      <p class="footer-credits">
+        Organized with passion by <strong>Black Rabbit</strong> Student Technology Community.<br>
+        Hackwarts 2026. All magical rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Fixed Audio Music Toggle Button -->
+  <audio class="background-music" loop preload="metadata">
+    <source src="back_song.mp4" type="audio/mp4">
+  </audio>
+
+  <button class="music-toggle" type="button" aria-label="Play background music" aria-pressed="false" title="Play background music">
+    <svg class="icon-sound" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12zM14 3.23v2.06a7 7 0 0 1 0 13.42v2.06a9 9 0 0 0 0-17.54z"/>
+    </svg>
+    <svg class="icon-muted" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 9v6h4l5 4V5L7 9H3zm13.59 3 2.12 2.12-1.41 1.41L15.17 13.4l-2.12 2.13-1.42-1.42L13.76 12l-2.13-2.12 1.42-1.42 2.12 2.13 2.13-2.13 1.41 1.42L16.59 12z"/>
+    </svg>
+  </button>
+
+  <!-- Custom Wand Cursor Elements -->
   <div class="wand-cursor" aria-hidden="true">
     <img class="wand-cursor-image" src="wand-cursor.svg" alt="">
     <span class="wand-orbit">
@@ -541,63 +2798,17 @@
       <span class="wand-spark"></span>
     </span>
   </div>
+
+  <!-- Interactive Scripts -->
   <script>
-    const video = document.querySelector(".backdrop");
-    const loadingVideo = document.querySelector(".loading-video");
+    // --- Audio & Video Controls ---
     const music = document.querySelector(".background-music");
     const musicToggle = document.querySelector(".music-toggle");
-    const loadingScreen = document.querySelector(".loading-screen");
     const wandCursor = document.querySelector(".wand-cursor");
     const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const enableIntroVideo = false;
-    const loadingStart = 9;
-    const loadingEnd = 17;
-    let loadingFinished = false;
-    let loadingTimeout;
 
-    function finishLoadingScreen() {
-      if (loadingFinished) {
-        return;
-      }
-
-      loadingFinished = true;
-      window.clearTimeout(loadingTimeout);
-      loadingVideo.pause();
-      loadingScreen.classList.add("is-hidden");
-      loadingScreen.setAttribute("aria-hidden", "true");
-      loadingScreen.inert = true;
-    }
-
-    function startLoadingVideo() {
-      if (loadingFinished || loadingVideo.dataset.seekStarted) {
-        return;
-      }
-
-      if (!Number.isFinite(loadingVideo.duration) || loadingVideo.duration < loadingEnd) {
-        console.error("The loading video is shorter than the requested 00:09–00:17 segment.");
-        finishLoadingScreen();
-        return;
-      }
-
-      loadingVideo.dataset.seekStarted = "true";
-      loadingVideo.addEventListener("seeked", async () => {
-        if (loadingFinished) {
-          return;
-        }
-
-        try {
-          await loadingVideo.play();
-        } catch (error) {
-          if (error.name !== "AbortError") {
-            console.error("Could not play the loading video.", error);
-          }
-          finishLoadingScreen();
-        }
-      }, { once: true });
-      loadingVideo.currentTime = loadingStart;
-    }
-
+    // Wand cursor movement
     if (finePointer.matches) {
       document.body.classList.add("magic-cursor-enabled");
 
@@ -605,7 +2816,6 @@
         if (event.pointerType !== "mouse" && event.pointerType !== "pen") {
           return;
         }
-
         wandCursor.style.transform = `translate3d(${event.clientX - 24}px, ${event.clientY - 8}px, 0)`;
         wandCursor.classList.add("is-visible");
       }, { passive: true });
@@ -615,6 +2825,7 @@
       });
     }
 
+    // Music toggle
     function syncMusicToggle() {
       const isPlaying = !music.paused;
       const label = isPlaying ? "Pause background music" : "Play background music";
@@ -632,41 +2843,11 @@
           syncMusicToggle();
           return;
         }
-
         musicToggle.disabled = true;
         musicToggle.setAttribute("aria-label", "Background music unavailable");
         musicToggle.setAttribute("title", "Background music unavailable");
         console.error("Could not play the background music.", error);
       }
-    }
-
-    if (reducedMotion.matches) {
-      video.pause();
-    }
-
-    if (enableIntroVideo) {
-      loadingScreen.hidden = false;
-      loadingScreen.inert = false;
-      loadingScreen.removeAttribute("aria-hidden");
-      loadingVideo.preload = "auto";
-      loadingVideo.addEventListener("loadedmetadata", startLoadingVideo);
-      loadingVideo.addEventListener("timeupdate", () => {
-        if (loadingVideo.currentTime >= loadingEnd) {
-          finishLoadingScreen();
-        }
-      });
-      loadingVideo.addEventListener("ended", finishLoadingScreen);
-      loadingVideo.addEventListener("error", () => {
-        console.error("Could not load the loading video.");
-        finishLoadingScreen();
-      });
-      loadingTimeout = window.setTimeout(() => {
-        if (!loadingFinished) {
-          console.error("The loading video timed out before the intro completed.");
-          finishLoadingScreen();
-        }
-      }, 20000);
-      loadingVideo.load();
     }
 
     musicToggle.addEventListener("click", () => {
@@ -681,6 +2862,155 @@
     music.addEventListener("play", syncMusicToggle);
     music.addEventListener("pause", syncMusicToggle);
     syncMusicToggle();
+
+    // --- Houses Interactive Tab Switcher ---
+    const houseData = {
+      slytherin: {
+        title: "Welcome To Slytherin",
+        crest: "assest/crest_slytherin.jpg",
+        motto: "“Greatness Awaits The Ambitious”",
+        traits: "Ambition • Resourcefulness • Cunning",
+        desc: "Slytherin produces architects of extraordinary scale and strategic mastery. In the arena of Hackwarts, Slytherin hackers leverage cutting-edge systems, tactical precision, and relentless drive to construct projects that conquer the leaderboard.",
+        wizards: ["Severus Snape", "Tom Riddle", "Draco Malfoy", "Merlin"],
+        color: "#6de29d",
+        bgBadge: "rgba(46, 204, 113, 0.2)",
+        borderBadge: "#2ecc71",
+        textColor: "#a3e9b8"
+      },
+      gryffindor: {
+        title: "Welcome To Gryffindor",
+        crest: "assest/crest_gryffindor.jpg",
+        motto: "“Fortiter Et Fideliter”",
+        traits: "Courage • Bravery • Determination",
+        desc: "Gryffindor is home to the fearless pioneers who tackle daunting challenges without flinching. Gryffindor hackers dare to build novel solutions from scratch, debugging through the midnight hours with unwavering spirit.",
+        wizards: ["Albus Dumbledore", "Hermione Granger", "Harry Potter", "Minerva McGonagall"],
+        color: "#f18073",
+        bgBadge: "rgba(231, 76, 60, 0.2)",
+        borderBadge: "#e74c3c",
+        textColor: "#f9b7af"
+      },
+      ravenclaw: {
+        title: "Welcome To Ravenclaw",
+        crest: "assest/crest_ravenclaw.jpg",
+        motto: "“Wit Beyond Measure is Man's Greatest Treasure”",
+        traits: "Wisdom • Wit • Intellect • Innovation",
+        desc: "Ravenclaw reveres profound knowledge, elegant algorithms, and analytical genius. Ravenclaw teams excel at intricate architectures, complex data patterns, and solutions that synthesize beauty with mathematical precision.",
+        wizards: ["Rowena Ravenclaw", "Filius Flitwick", "Luna Lovegood", "Garrick Ollivander"],
+        color: "#7ab8ea",
+        bgBadge: "rgba(52, 152, 219, 0.2)",
+        borderBadge: "#3498db",
+        textColor: "#bce0fd"
+      }
+    };
+
+    const houseTabBtns = document.querySelectorAll(".house-tab-btn");
+    const houseCrestImg = document.getElementById("houseCrestImg");
+    const houseMotto = document.getElementById("houseMotto");
+    const houseTitle = document.getElementById("houseTitle");
+    const houseDesc = document.getElementById("houseDesc");
+    const houseTraitsBadge = document.getElementById("houseTraitsBadge");
+    const houseWizardsList = document.getElementById("houseWizardsList");
+
+    function setHouse(key) {
+      const data = houseData[key];
+      if (!data) return;
+
+      houseTabBtns.forEach(btn => {
+        const isActive = btn.dataset.house === key;
+        btn.classList.toggle("is-active", isActive);
+        btn.setAttribute("aria-selected", String(isActive));
+      });
+
+      houseCrestImg.src = data.crest;
+      houseCrestImg.alt = data.title;
+      houseMotto.textContent = data.motto;
+      houseTitle.textContent = data.title;
+      houseTitle.style.color = data.color;
+      houseDesc.textContent = data.desc;
+
+      houseTraitsBadge.textContent = data.traits;
+      houseTraitsBadge.style.background = data.bgBadge;
+      houseTraitsBadge.style.borderColor = data.borderBadge;
+      houseTraitsBadge.style.color = data.textColor;
+
+      houseWizardsList.innerHTML = data.wizards
+        .map(w => `<span class="wizard-pill">${w}</span>`)
+        .join("");
+    }
+
+    houseTabBtns.forEach(btn => {
+      btn.addEventListener("click", () => {
+        setHouse(btn.dataset.house);
+      });
+    });
+
+    document.querySelectorAll(".house-card").forEach(card => {
+      card.addEventListener("click", () => {
+        const key = card.dataset.selectHouse;
+        setHouse(key);
+        document.getElementById("houseFeatured").scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    });
+
+    // --- FAQ Accordion ---
+    document.querySelectorAll(".faq-question").forEach(q => {
+      q.addEventListener("click", () => {
+        const item = q.parentElement;
+        const isOpen = item.classList.contains("is-open");
+        document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("is-open"));
+        if (!isOpen) {
+          item.classList.add("is-open");
+        }
+      });
+    });
+
+    // --- Active Nav Link Scroll Spy ---
+    const navLinks = document.querySelectorAll(".nav-link");
+    const trackedSections = [
+      { id: "home", nav: "home" },
+      { id: "about", nav: "about" },
+      { id: "overview", nav: "about" },
+      { id: "houses", nav: "houses" },
+      { id: "tracks", nav: "tracks" },
+      { id: "schedule", nav: "schedule" },
+      { id: "faqs", nav: "faqs" },
+      { id: "contact", nav: "contact" }
+    ];
+
+    window.addEventListener("scroll", () => {
+      const scrollPos = window.scrollY + 140;
+      let activeNav = "home";
+
+      for (const item of trackedSections) {
+        const el = document.getElementById(item.id);
+        if (el && el.offsetTop <= scrollPos) {
+          activeNav = item.nav;
+        }
+      }
+
+      navLinks.forEach(link => {
+        const hrefId = link.getAttribute("href").replace("#", "");
+        if (hrefId === activeNav) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    }, { passive: true });
+
+    // --- Registration Form Simulation ---
+    const regForm = document.getElementById("hackwartsRegForm");
+    const regSuccessMsg = document.getElementById("regSuccessMsg");
+
+    if (regForm) {
+      regForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const team = document.getElementById("teamName").value;
+        regSuccessMsg.style.display = "block";
+        regSuccessMsg.textContent = `✦ The spell is cast! Team "${team}" has been formally registered for Hackwarts. An owl confirmation has been dispatched!`;
+        regForm.reset();
+      });
+    }
   </script>
 </body>
 </html>
